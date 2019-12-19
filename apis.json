@@ -1,0 +1,63 @@
+{
+    "name": "Capsule",
+    "description": "",
+    "image": "http:\/\/kinlane-productions.s3.amazonaws.com\/api-evangelist-site\/company\/logos\/capsule-crm-logo.png",
+    "tags": [
+        "api provider",
+        "crm",
+        "have api",
+        "profile",
+        "target"
+    ],
+    "created": "2019-12-19",
+    "modified": "2019-12-19",
+    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/capsule\/master\/apis.json",
+    "specificationVersion": "0.14",
+    "apis": [
+        {
+            "name": "Capsule",
+            "description": null,
+            "image": "http:\/\/kinlane-productions.s3.amazonaws.com\/api-evangelist-site\/company\/logos\/capsule-crm-logo.png",
+            "humanURL": "http:\/\/capsulecrm.com\/",
+            "baseURL": "",
+            "tags": [],
+            "properties": [
+                {
+                    "type": "x-openapi",
+                    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/1forge\/master\/capsule-openapi.json"
+                },
+                {
+                    "type": "x-postman-collecction",
+                    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/1forge\/master\/capsule-postman-collection.json"
+                }
+            ]
+        }
+    ],
+    "include": [],
+    "x-common": [
+        {
+            "type": "Base",
+            "url": "http:\/\/sample.capsulecrm.com"
+        },
+        {
+            "type": "Developers",
+            "url": "http:\/\/developer.capsulecrm.com\/"
+        },
+        {
+            "type": "Email",
+            "url": "support@capsulecrm.com"
+        },
+        {
+            "type": "Email",
+            "url": "hello@capsulecrm.com"
+        },
+        {
+            "type": "Twitter",
+            "url": "https:\/\/twitter.com\/CapsuleCRM"
+        },
+        {
+            "type": "Website",
+            "url": "http:\/\/capsulecrm.com\/"
+        }
+    ]
+}
