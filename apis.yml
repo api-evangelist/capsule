@@ -1,13 +1,42 @@
+aid: capsule
+url: >-
+  https://raw.githubusercontent.com/api-evangelist/capsule/refs/heads/main/apis.yml
 name: Capsule
-description: A CRM and project management tool designed for small businesses to manage
-  contacts, tasks, and sales pipelines in one unified platform.
-url: https://capsulecrm.com
 tags:
-- CRM
-- Project Management
-- Sales
-- Contact Management
-created: '2025'
-modified: '2025'
-apis: []
-common: []
+  - CRM
+  - Project Management
+  - Sales
+  - Contact Management
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+access: 3rd-Party
+created: '2025-01-01'
+modified: '2026-03-16'
+position: Consumer
+description: >-
+  Capsule is a CRM and project management tool designed for small businesses
+  to manage contacts, tasks, and sales pipelines in one unified platform.
+apis:
+  - aid: capsule:capsule-api
+    name: Capsule API
+    tags:
+      - CRM
+      - Sales
+    humanURL: https://developer.capsulecrm.com/
+    properties:
+      - url: https://developer.capsulecrm.com/
+        type: Documentation
+    description: >-
+      The Capsule API provides access to contacts, opportunities, tasks, and
+      other CRM data.
+common:
+  - type: Website
+    url: https://capsulecrm.com
+  - type: Documentation
+    url: https://developer.capsulecrm.com/
+  - type: Privacy Policy
+    url: https://capsulecrm.com/privacy-policy
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
+specificationVersion: '0.19'
