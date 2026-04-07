@@ -3,10 +3,10 @@ url: >-
   https://raw.githubusercontent.com/api-evangelist/capsule/refs/heads/main/apis.yml
 name: Capsule
 tags:
+  - Contact Management
   - CRM
   - Project Management
   - Sales
-  - Contact Management
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 access: 3rd-Party
