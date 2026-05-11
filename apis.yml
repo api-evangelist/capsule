@@ -89,6 +89,16 @@ common:
     url: https://capsulecrm.com/privacy-policy
   - type: Terms of Service
     url: https://capsulecrm.com/terms-of-service
+  - type: Integrations
+    url: https://capsulecrm.com/integrations/
+integrations:
+  - name: QuickBooks
+  - name: Xero
+  - name: Zapier
+  - name: Mailchimp
+  - name: Gmail
+  - name: Outlook
+  - name: Transpond
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
