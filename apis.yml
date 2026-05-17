@@ -10,7 +10,7 @@ description: >-
   tracks, and settings such as tags, pipelines, milestones, stages, and
   custom fields, with REST Hooks webhooks for event-driven integration.
 type: Index
-x-type: company
+kind: company
 position: Consumer
 access: 3rd-Party
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
@@ -85,9 +85,9 @@ common:
     url: https://capsulecrm.com/support
   - type: Blog
     url: https://capsulecrm.com/blog
-  - type: Privacy Policy
+  - type: PrivacyPolicy
     url: https://capsulecrm.com/privacy-policy
-  - type: Terms of Service
+  - type: TermsOfService
     url: https://capsulecrm.com/terms-of-service
   - type: Integrations
     url: https://capsulecrm.com/integrations/
