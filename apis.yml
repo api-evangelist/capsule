@@ -75,6 +75,8 @@ apis:
       - Reporting and analytics on pipeline, projects, and activities
       - Embedding Capsule data in custom internal dashboards
 common:
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/capsulecrm
   - type: Website
     url: https://capsulecrm.com
   - type: Documentation
