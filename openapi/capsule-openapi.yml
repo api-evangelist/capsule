@@ -1,0 +1,449 @@
+openapi: 3.1.0
+info:
+  title: Capsule CRM REST API
+  description: |
+    Capsule CRM v2 REST API for parties (contacts and companies),
+    opportunities, projects (kases), and tasks. Authentication uses
+    OAuth 2.0 bearer tokens (authorization code flow) or personal
+    access tokens.
+
+    This specification is a best-effort, hand-authored representation of
+    the publicly documented operations at https://developer.capsulecrm.com/.
+    Request bodies and response schemas are modeled generically; refer to
+    the developer docs for the full property set per resource.
+  version: "2.0.0"
+  contact:
+    name: Capsule CRM
+    url: https://developer.capsulecrm.com/
+servers:
+  - url: https://api.capsulecrm.com/api/v2
+    description: Production
+security:
+  - bearerAuth: []
+tags:
+  - name: Parties
+  - name: Opportunities
+  - name: Projects
+  - name: Tasks
+paths:
+  /parties:
+    get:
+      tags: [Parties]
+      summary: List parties
+      parameters:
+        - { $ref: '#/components/parameters/Embed' }
+        - { $ref: '#/components/parameters/Page' }
+        - { $ref: '#/components/parameters/PerPage' }
+      responses:
+        '200': { $ref: '#/components/responses/PartyList' }
+    post:
+      tags: [Parties]
+      summary: Create a party
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/PartyEnvelope' }
+      responses:
+        '201': { $ref: '#/components/responses/PartyObject' }
+  /parties/{partyId}:
+    parameters:
+      - { $ref: '#/components/parameters/PartyId' }
+    get:
+      tags: [Parties]
+      summary: Show a party
+      parameters:
+        - { $ref: '#/components/parameters/Embed' }
+      responses:
+        '200': { $ref: '#/components/responses/PartyObject' }
+    put:
+      tags: [Parties]
+      summary: Update a party
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/PartyEnvelope' }
+      responses:
+        '200': { $ref: '#/components/responses/PartyObject' }
+    delete:
+      tags: [Parties]
+      summary: Delete a party
+      responses:
+        '204': { description: Deleted }
+  /parties/{partyId}/people:
+    parameters:
+      - { $ref: '#/components/parameters/PartyId' }
+    get:
+      tags: [Parties]
+      summary: List employees linked to an organisation
+      responses:
+        '200': { $ref: '#/components/responses/PartyList' }
+  /parties/deleted:
+    get:
+      tags: [Parties]
+      summary: List deleted parties since a date
+      parameters:
+        - in: query
+          name: since
+          schema: { type: string, format: date-time }
+      responses:
+        '200': { $ref: '#/components/responses/PartyList' }
+  /parties/search:
+    get:
+      tags: [Parties]
+      summary: Search parties
+      parameters:
+        - in: query
+          name: q
+          schema: { type: string }
+      responses:
+        '200': { $ref: '#/components/responses/PartyList' }
+  /opportunities:
+    get:
+      tags: [Opportunities]
+      summary: List opportunities
+      parameters:
+        - { $ref: '#/components/parameters/Page' }
+        - { $ref: '#/components/parameters/PerPage' }
+      responses:
+        '200': { $ref: '#/components/responses/OpportunityList' }
+    post:
+      tags: [Opportunities]
+      summary: Create an opportunity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/OpportunityEnvelope' }
+      responses:
+        '201': { $ref: '#/components/responses/OpportunityObject' }
+  /opportunities/{opportunityId}:
+    parameters:
+      - { $ref: '#/components/parameters/OpportunityId' }
+    get:
+      tags: [Opportunities]
+      summary: Show an opportunity
+      responses:
+        '200': { $ref: '#/components/responses/OpportunityObject' }
+    put:
+      tags: [Opportunities]
+      summary: Update an opportunity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/OpportunityEnvelope' }
+      responses:
+        '200': { $ref: '#/components/responses/OpportunityObject' }
+    delete:
+      tags: [Opportunities]
+      summary: Delete an opportunity
+      responses:
+        '204': { description: Deleted }
+  /opportunities/deleted:
+    get:
+      tags: [Opportunities]
+      summary: List deleted opportunities
+      parameters:
+        - in: query
+          name: since
+          schema: { type: string, format: date-time }
+      responses:
+        '200': { $ref: '#/components/responses/OpportunityList' }
+  /opportunities/search:
+    get:
+      tags: [Opportunities]
+      summary: Search opportunities
+      parameters:
+        - in: query
+          name: q
+          schema: { type: string }
+      responses:
+        '200': { $ref: '#/components/responses/OpportunityList' }
+  /opportunities/{opportunityId}/parties:
+    parameters:
+      - { $ref: '#/components/parameters/OpportunityId' }
+    get:
+      tags: [Opportunities]
+      summary: List additional parties on an opportunity
+      responses:
+        '200': { $ref: '#/components/responses/PartyList' }
+  /opportunities/{opportunityId}/parties/{partyId}:
+    parameters:
+      - { $ref: '#/components/parameters/OpportunityId' }
+      - { $ref: '#/components/parameters/PartyId' }
+    post:
+      tags: [Opportunities]
+      summary: Add an additional party to an opportunity
+      responses:
+        '201': { $ref: '#/components/responses/Generic' }
+    delete:
+      tags: [Opportunities]
+      summary: Remove an additional party from an opportunity
+      responses:
+        '204': { description: Removed }
+  /parties/{partyId}/opportunities:
+    parameters:
+      - { $ref: '#/components/parameters/PartyId' }
+    get:
+      tags: [Opportunities]
+      summary: List opportunities for a party
+      responses:
+        '200': { $ref: '#/components/responses/OpportunityList' }
+  /kases:
+    get:
+      tags: [Projects]
+      summary: List projects
+      parameters:
+        - { $ref: '#/components/parameters/Page' }
+        - { $ref: '#/components/parameters/PerPage' }
+      responses:
+        '200': { $ref: '#/components/responses/ProjectList' }
+    post:
+      tags: [Projects]
+      summary: Create a project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ProjectEnvelope' }
+      responses:
+        '201': { $ref: '#/components/responses/ProjectObject' }
+  /kases/{projectId}:
+    parameters:
+      - { $ref: '#/components/parameters/ProjectId' }
+    get:
+      tags: [Projects]
+      summary: Show a project
+      responses:
+        '200': { $ref: '#/components/responses/ProjectObject' }
+    put:
+      tags: [Projects]
+      summary: Update a project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ProjectEnvelope' }
+      responses:
+        '200': { $ref: '#/components/responses/ProjectObject' }
+    delete:
+      tags: [Projects]
+      summary: Delete a project
+      responses:
+        '204': { description: Deleted }
+  /kases/deleted:
+    get:
+      tags: [Projects]
+      summary: List deleted projects
+      parameters:
+        - in: query
+          name: since
+          schema: { type: string, format: date-time }
+      responses:
+        '200': { $ref: '#/components/responses/ProjectList' }
+  /kases/search:
+    get:
+      tags: [Projects]
+      summary: Search projects
+      parameters:
+        - in: query
+          name: q
+          schema: { type: string }
+      responses:
+        '200': { $ref: '#/components/responses/ProjectList' }
+  /parties/{partyId}/kases:
+    parameters:
+      - { $ref: '#/components/parameters/PartyId' }
+    get:
+      tags: [Projects]
+      summary: List projects for a party
+      responses:
+        '200': { $ref: '#/components/responses/ProjectList' }
+  /tasks:
+    get:
+      tags: [Tasks]
+      summary: List tasks
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [open, completed, pending]
+        - { $ref: '#/components/parameters/Page' }
+        - { $ref: '#/components/parameters/PerPage' }
+      responses:
+        '200': { $ref: '#/components/responses/TaskList' }
+    post:
+      tags: [Tasks]
+      summary: Create a task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/TaskEnvelope' }
+      responses:
+        '201': { $ref: '#/components/responses/TaskObject' }
+  /tasks/{taskId}:
+    parameters:
+      - in: path
+        name: taskId
+        required: true
+        schema: { type: string }
+    get:
+      tags: [Tasks]
+      summary: Show a task
+      responses:
+        '200': { $ref: '#/components/responses/TaskObject' }
+    put:
+      tags: [Tasks]
+      summary: Update a task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/TaskEnvelope' }
+      responses:
+        '200': { $ref: '#/components/responses/TaskObject' }
+    delete:
+      tags: [Tasks]
+      summary: Delete a task
+      responses:
+        '204': { description: Deleted }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        OAuth 2.0 access token or personal access token. The OAuth
+        authorization endpoint is https://api.capsulecrm.com/oauth/authorise
+        and the token endpoint is https://api.capsulecrm.com/oauth/token.
+  parameters:
+    PartyId:
+      in: path
+      name: partyId
+      required: true
+      schema: { type: string }
+    OpportunityId:
+      in: path
+      name: opportunityId
+      required: true
+      schema: { type: string }
+    ProjectId:
+      in: path
+      name: projectId
+      required: true
+      schema: { type: string }
+    Embed:
+      in: query
+      name: embed
+      description: Comma-separated list of related resources to embed.
+      schema: { type: string }
+    Page:
+      in: query
+      name: page
+      schema: { type: integer }
+    PerPage:
+      in: query
+      name: perPage
+      schema: { type: integer }
+  schemas:
+    Party:
+      type: object
+      additionalProperties: true
+    PartyEnvelope:
+      type: object
+      properties:
+        party: { $ref: '#/components/schemas/Party' }
+    Opportunity:
+      type: object
+      additionalProperties: true
+    OpportunityEnvelope:
+      type: object
+      properties:
+        opportunity: { $ref: '#/components/schemas/Opportunity' }
+    Project:
+      type: object
+      additionalProperties: true
+    ProjectEnvelope:
+      type: object
+      properties:
+        kase: { $ref: '#/components/schemas/Project' }
+    Task:
+      type: object
+      additionalProperties: true
+    TaskEnvelope:
+      type: object
+      properties:
+        task: { $ref: '#/components/schemas/Task' }
+  responses:
+    Generic:
+      description: Operation accepted.
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: true
+    PartyObject:
+      description: Party envelope.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/PartyEnvelope' }
+    PartyList:
+      description: List of parties.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              parties:
+                type: array
+                items: { $ref: '#/components/schemas/Party' }
+    OpportunityObject:
+      description: Opportunity envelope.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/OpportunityEnvelope' }
+    OpportunityList:
+      description: List of opportunities.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              opportunities:
+                type: array
+                items: { $ref: '#/components/schemas/Opportunity' }
+    ProjectObject:
+      description: Project envelope.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/ProjectEnvelope' }
+    ProjectList:
+      description: List of projects.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              kases:
+                type: array
+                items: { $ref: '#/components/schemas/Project' }
+    TaskObject:
+      description: Task envelope.
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/TaskEnvelope' }
+    TaskList:
+      description: List of tasks.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              tasks:
+                type: array
+                items: { $ref: '#/components/schemas/Task' }
