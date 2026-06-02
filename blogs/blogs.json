@@ -2,13 +2,13 @@
   "repo": "capsule",
   "feeds": [
     {
-      "source": "https://capsulecrm.com/blog",
-      "feed_url": "",
+      "source": "https://capsulecrm.com/support",
+      "feed_url": "https://capsulecrm.com/support",
       "title": "",
       "saved": 0,
-      "error": "no_feed"
+      "method": "none"
     }
   ],
-  "fetched": "2026-05-17T20:48:52Z",
+  "fetched": "2026-06-01T23:35:02Z",
   "post_count": 0
 }
