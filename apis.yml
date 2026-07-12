@@ -75,6 +75,10 @@ apis:
       - Reporting and analytics on pipeline, projects, and activities
       - Embedding Capsule data in custom internal dashboards
 common:
+  - type: DomainSecurity
+    url: security/capsule-domain-security.yml
+  - type: Authentication
+    url: authentication/capsule-authentication.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/capsulecrm
   - type: Website

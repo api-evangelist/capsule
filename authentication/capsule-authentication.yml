@@ -1,0 +1,17 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/capsule-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: |-
+    OAuth 2.0 access token or personal access token. The OAuth
+    authorization endpoint is https://api.capsulecrm.com/oauth/authorise
+    and the token endpoint is https://api.capsulecrm.com/oauth/token.
+  sources:
+  - openapi/capsule-openapi.yml
