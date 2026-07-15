@@ -75,6 +75,8 @@ apis:
       - Reporting and analytics on pipeline, projects, and activities
       - Embedding Capsule data in custom internal dashboards
 common:
+  - type: AgenticAccess
+    url: agentic-access/capsule-agentic-access.yml
   - type: DomainSecurity
     url: security/capsule-domain-security.yml
   - type: Authentication
