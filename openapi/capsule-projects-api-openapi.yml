@@ -1,0 +1,187 @@
+openapi: 3.1.0
+info:
+  title: Capsule CRM REST Opportunities Projects API
+  description: 'Capsule CRM v2 REST API for parties (contacts and companies),
+
+    opportunities, projects (kases), and tasks. Authentication uses
+
+    OAuth 2.0 bearer tokens (authorization code flow) or personal
+
+    access tokens.
+
+
+    This specification is a best-effort, hand-authored representation of
+
+    the publicly documented operations at https://developer.capsulecrm.com/.
+
+    Request bodies and response schemas are modeled generically; refer to
+
+    the developer docs for the full property set per resource.
+
+    '
+  version: 2.0.0
+  contact:
+    name: Capsule CRM
+    url: https://developer.capsulecrm.com/
+servers:
+- url: https://api.capsulecrm.com/api/v2
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Projects
+paths:
+  /kases:
+    get:
+      tags:
+      - Projects
+      summary: List projects
+      parameters:
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProjectList'
+    post:
+      tags:
+      - Projects
+      summary: Create a project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectEnvelope'
+      responses:
+        '201':
+          $ref: '#/components/responses/ProjectObject'
+  /kases/{projectId}:
+    parameters:
+    - $ref: '#/components/parameters/ProjectId'
+    get:
+      tags:
+      - Projects
+      summary: Show a project
+      responses:
+        '200':
+          $ref: '#/components/responses/ProjectObject'
+    put:
+      tags:
+      - Projects
+      summary: Update a project
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectEnvelope'
+      responses:
+        '200':
+          $ref: '#/components/responses/ProjectObject'
+    delete:
+      tags:
+      - Projects
+      summary: Delete a project
+      responses:
+        '204':
+          description: Deleted
+  /kases/deleted:
+    get:
+      tags:
+      - Projects
+      summary: List deleted projects
+      parameters:
+      - in: query
+        name: since
+        schema:
+          type: string
+          format: date-time
+      responses:
+        '200':
+          $ref: '#/components/responses/ProjectList'
+  /kases/search:
+    get:
+      tags:
+      - Projects
+      summary: Search projects
+      parameters:
+      - in: query
+        name: q
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/ProjectList'
+  /parties/{partyId}/kases:
+    parameters:
+    - $ref: '#/components/parameters/PartyId'
+    get:
+      tags:
+      - Projects
+      summary: List projects for a party
+      responses:
+        '200':
+          $ref: '#/components/responses/ProjectList'
+components:
+  responses:
+    ProjectList:
+      description: List of projects.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              kases:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+    ProjectObject:
+      description: Project envelope.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProjectEnvelope'
+  parameters:
+    PartyId:
+      in: path
+      name: partyId
+      required: true
+      schema:
+        type: string
+    PerPage:
+      in: query
+      name: perPage
+      schema:
+        type: integer
+    ProjectId:
+      in: path
+      name: projectId
+      required: true
+      schema:
+        type: string
+    Page:
+      in: query
+      name: page
+      schema:
+        type: integer
+  schemas:
+    ProjectEnvelope:
+      type: object
+      properties:
+        kase:
+          $ref: '#/components/schemas/Project'
+    Project:
+      type: object
+      additionalProperties: true
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'OAuth 2.0 access token or personal access token. The OAuth
+
+        authorization endpoint is https://api.capsulecrm.com/oauth/authorise
+
+        and the token endpoint is https://api.capsulecrm.com/oauth/token.
+
+        '

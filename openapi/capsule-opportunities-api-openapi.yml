@@ -1,0 +1,236 @@
+openapi: 3.1.0
+info:
+  title: Capsule CRM REST Opportunities API
+  description: 'Capsule CRM v2 REST API for parties (contacts and companies),
+
+    opportunities, projects (kases), and tasks. Authentication uses
+
+    OAuth 2.0 bearer tokens (authorization code flow) or personal
+
+    access tokens.
+
+
+    This specification is a best-effort, hand-authored representation of
+
+    the publicly documented operations at https://developer.capsulecrm.com/.
+
+    Request bodies and response schemas are modeled generically; refer to
+
+    the developer docs for the full property set per resource.
+
+    '
+  version: 2.0.0
+  contact:
+    name: Capsule CRM
+    url: https://developer.capsulecrm.com/
+servers:
+- url: https://api.capsulecrm.com/api/v2
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Opportunities
+paths:
+  /opportunities:
+    get:
+      tags:
+      - Opportunities
+      summary: List opportunities
+      parameters:
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          $ref: '#/components/responses/OpportunityList'
+    post:
+      tags:
+      - Opportunities
+      summary: Create an opportunity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpportunityEnvelope'
+      responses:
+        '201':
+          $ref: '#/components/responses/OpportunityObject'
+  /opportunities/{opportunityId}:
+    parameters:
+    - $ref: '#/components/parameters/OpportunityId'
+    get:
+      tags:
+      - Opportunities
+      summary: Show an opportunity
+      responses:
+        '200':
+          $ref: '#/components/responses/OpportunityObject'
+    put:
+      tags:
+      - Opportunities
+      summary: Update an opportunity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpportunityEnvelope'
+      responses:
+        '200':
+          $ref: '#/components/responses/OpportunityObject'
+    delete:
+      tags:
+      - Opportunities
+      summary: Delete an opportunity
+      responses:
+        '204':
+          description: Deleted
+  /opportunities/deleted:
+    get:
+      tags:
+      - Opportunities
+      summary: List deleted opportunities
+      parameters:
+      - in: query
+        name: since
+        schema:
+          type: string
+          format: date-time
+      responses:
+        '200':
+          $ref: '#/components/responses/OpportunityList'
+  /opportunities/search:
+    get:
+      tags:
+      - Opportunities
+      summary: Search opportunities
+      parameters:
+      - in: query
+        name: q
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/OpportunityList'
+  /opportunities/{opportunityId}/parties:
+    parameters:
+    - $ref: '#/components/parameters/OpportunityId'
+    get:
+      tags:
+      - Opportunities
+      summary: List additional parties on an opportunity
+      responses:
+        '200':
+          $ref: '#/components/responses/PartyList'
+  /opportunities/{opportunityId}/parties/{partyId}:
+    parameters:
+    - $ref: '#/components/parameters/OpportunityId'
+    - $ref: '#/components/parameters/PartyId'
+    post:
+      tags:
+      - Opportunities
+      summary: Add an additional party to an opportunity
+      responses:
+        '201':
+          $ref: '#/components/responses/Generic'
+    delete:
+      tags:
+      - Opportunities
+      summary: Remove an additional party from an opportunity
+      responses:
+        '204':
+          description: Removed
+  /parties/{partyId}/opportunities:
+    parameters:
+    - $ref: '#/components/parameters/PartyId'
+    get:
+      tags:
+      - Opportunities
+      summary: List opportunities for a party
+      responses:
+        '200':
+          $ref: '#/components/responses/OpportunityList'
+components:
+  schemas:
+    Party:
+      type: object
+      additionalProperties: true
+    OpportunityEnvelope:
+      type: object
+      properties:
+        opportunity:
+          $ref: '#/components/schemas/Opportunity'
+    Opportunity:
+      type: object
+      additionalProperties: true
+  parameters:
+    PartyId:
+      in: path
+      name: partyId
+      required: true
+      schema:
+        type: string
+    PerPage:
+      in: query
+      name: perPage
+      schema:
+        type: integer
+    Page:
+      in: query
+      name: page
+      schema:
+        type: integer
+    OpportunityId:
+      in: path
+      name: opportunityId
+      required: true
+      schema:
+        type: string
+  responses:
+    OpportunityObject:
+      description: Opportunity envelope.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OpportunityEnvelope'
+    OpportunityList:
+      description: List of opportunities.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              opportunities:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Opportunity'
+    Generic:
+      description: Operation accepted.
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: true
+    PartyList:
+      description: List of parties.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              parties:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Party'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'OAuth 2.0 access token or personal access token. The OAuth
+
+        authorization endpoint is https://api.capsulecrm.com/oauth/authorise
+
+        and the token endpoint is https://api.capsulecrm.com/oauth/token.
+
+        '

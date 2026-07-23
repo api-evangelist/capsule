@@ -1,0 +1,190 @@
+openapi: 3.1.0
+info:
+  title: Capsule CRM REST Opportunities Parties API
+  description: 'Capsule CRM v2 REST API for parties (contacts and companies),
+
+    opportunities, projects (kases), and tasks. Authentication uses
+
+    OAuth 2.0 bearer tokens (authorization code flow) or personal
+
+    access tokens.
+
+
+    This specification is a best-effort, hand-authored representation of
+
+    the publicly documented operations at https://developer.capsulecrm.com/.
+
+    Request bodies and response schemas are modeled generically; refer to
+
+    the developer docs for the full property set per resource.
+
+    '
+  version: 2.0.0
+  contact:
+    name: Capsule CRM
+    url: https://developer.capsulecrm.com/
+servers:
+- url: https://api.capsulecrm.com/api/v2
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Parties
+paths:
+  /parties:
+    get:
+      tags:
+      - Parties
+      summary: List parties
+      parameters:
+      - $ref: '#/components/parameters/Embed'
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          $ref: '#/components/responses/PartyList'
+    post:
+      tags:
+      - Parties
+      summary: Create a party
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PartyEnvelope'
+      responses:
+        '201':
+          $ref: '#/components/responses/PartyObject'
+  /parties/{partyId}:
+    parameters:
+    - $ref: '#/components/parameters/PartyId'
+    get:
+      tags:
+      - Parties
+      summary: Show a party
+      parameters:
+      - $ref: '#/components/parameters/Embed'
+      responses:
+        '200':
+          $ref: '#/components/responses/PartyObject'
+    put:
+      tags:
+      - Parties
+      summary: Update a party
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PartyEnvelope'
+      responses:
+        '200':
+          $ref: '#/components/responses/PartyObject'
+    delete:
+      tags:
+      - Parties
+      summary: Delete a party
+      responses:
+        '204':
+          description: Deleted
+  /parties/{partyId}/people:
+    parameters:
+    - $ref: '#/components/parameters/PartyId'
+    get:
+      tags:
+      - Parties
+      summary: List employees linked to an organisation
+      responses:
+        '200':
+          $ref: '#/components/responses/PartyList'
+  /parties/deleted:
+    get:
+      tags:
+      - Parties
+      summary: List deleted parties since a date
+      parameters:
+      - in: query
+        name: since
+        schema:
+          type: string
+          format: date-time
+      responses:
+        '200':
+          $ref: '#/components/responses/PartyList'
+  /parties/search:
+    get:
+      tags:
+      - Parties
+      summary: Search parties
+      parameters:
+      - in: query
+        name: q
+        schema:
+          type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/PartyList'
+components:
+  schemas:
+    Party:
+      type: object
+      additionalProperties: true
+    PartyEnvelope:
+      type: object
+      properties:
+        party:
+          $ref: '#/components/schemas/Party'
+  parameters:
+    Embed:
+      in: query
+      name: embed
+      description: Comma-separated list of related resources to embed.
+      schema:
+        type: string
+    PartyId:
+      in: path
+      name: partyId
+      required: true
+      schema:
+        type: string
+    PerPage:
+      in: query
+      name: perPage
+      schema:
+        type: integer
+    Page:
+      in: query
+      name: page
+      schema:
+        type: integer
+  responses:
+    PartyList:
+      description: List of parties.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              parties:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Party'
+    PartyObject:
+      description: Party envelope.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PartyEnvelope'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'OAuth 2.0 access token or personal access token. The OAuth
+
+        authorization endpoint is https://api.capsulecrm.com/oauth/authorise
+
+        and the token endpoint is https://api.capsulecrm.com/oauth/token.
+
+        '

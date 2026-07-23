@@ -1,0 +1,150 @@
+openapi: 3.1.0
+info:
+  title: Capsule CRM REST Opportunities Tasks API
+  description: 'Capsule CRM v2 REST API for parties (contacts and companies),
+
+    opportunities, projects (kases), and tasks. Authentication uses
+
+    OAuth 2.0 bearer tokens (authorization code flow) or personal
+
+    access tokens.
+
+
+    This specification is a best-effort, hand-authored representation of
+
+    the publicly documented operations at https://developer.capsulecrm.com/.
+
+    Request bodies and response schemas are modeled generically; refer to
+
+    the developer docs for the full property set per resource.
+
+    '
+  version: 2.0.0
+  contact:
+    name: Capsule CRM
+    url: https://developer.capsulecrm.com/
+servers:
+- url: https://api.capsulecrm.com/api/v2
+  description: Production
+security:
+- bearerAuth: []
+tags:
+- name: Tasks
+paths:
+  /tasks:
+    get:
+      tags:
+      - Tasks
+      summary: List tasks
+      parameters:
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - open
+          - completed
+          - pending
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PerPage'
+      responses:
+        '200':
+          $ref: '#/components/responses/TaskList'
+    post:
+      tags:
+      - Tasks
+      summary: Create a task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskEnvelope'
+      responses:
+        '201':
+          $ref: '#/components/responses/TaskObject'
+  /tasks/{taskId}:
+    parameters:
+    - in: path
+      name: taskId
+      required: true
+      schema:
+        type: string
+    get:
+      tags:
+      - Tasks
+      summary: Show a task
+      responses:
+        '200':
+          $ref: '#/components/responses/TaskObject'
+    put:
+      tags:
+      - Tasks
+      summary: Update a task
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskEnvelope'
+      responses:
+        '200':
+          $ref: '#/components/responses/TaskObject'
+    delete:
+      tags:
+      - Tasks
+      summary: Delete a task
+      responses:
+        '204':
+          description: Deleted
+components:
+  responses:
+    TaskObject:
+      description: Task envelope.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TaskEnvelope'
+    TaskList:
+      description: List of tasks.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              tasks:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+  schemas:
+    Task:
+      type: object
+      additionalProperties: true
+    TaskEnvelope:
+      type: object
+      properties:
+        task:
+          $ref: '#/components/schemas/Task'
+  parameters:
+    PerPage:
+      in: query
+      name: perPage
+      schema:
+        type: integer
+    Page:
+      in: query
+      name: page
+      schema:
+        type: integer
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'OAuth 2.0 access token or personal access token. The OAuth
+
+        authorization endpoint is https://api.capsulecrm.com/oauth/authorise
+
+        and the token endpoint is https://api.capsulecrm.com/oauth/token.
+
+        '
