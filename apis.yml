@@ -11,9 +11,22 @@ description: >-
   custom fields, with REST Hooks webhooks for event-driven integration.
 type: Index
 kind: company
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 position: Consumer
 access: 3rd-Party
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/capsule.png
 tags:
   - Contact Management
   - CRM
@@ -29,51 +42,66 @@ created: '2025-01-01'
 modified: '2026-04-23'
 specificationVersion: '0.19'
 apis:
-  - aid: capsule:capsule-rest-api
-    name: Capsule REST API
-    description: >-
-      The Capsule REST API provides CRUD access to Capsule CRM resources
-      including parties (contacts and companies), opportunities, projects,
-      tasks, cases, entries (activity log), and tracks. Settings resources
-      let integrators manage tags, custom fields, pipelines, milestones,
-      boards, stages, and activity types. REST Hooks webhooks notify
-      subscribers of changes and avoid polling.
-    humanURL: https://developer.capsulecrm.com/
-    tags:
-      - Contact Management
-      - CRM
-      - REST
-      - Sales
-      - Webhooks
-    properties:
-      - type: Documentation
-        url: https://developer.capsulecrm.com/
-      - type: Authentication
-        url: https://developer.capsulecrm.com/v2/overview/authentication
-      - type: Webhooks
-        url: https://developer.capsulecrm.com/v2/resources/rest-hooks
-      - type: OpenAPI
-        url: https://developer.capsulecrm.com/
-    x-features:
-      - Parties (contacts and companies) with list, search, CRUD
-      - Opportunities with pipeline, milestone, and value tracking
-      - Projects with assigned parties and status tracking
-      - Tasks and activities with assignees and due dates
-      - Cases for issue and support-style tracking
-      - Entries for activity notes and file attachments
-      - Tracks for repeatable activity sequences
-      - Configurable tags, custom fields, and activity types
-      - Pipelines, milestones, stages, and board configuration
-      - REST Hooks webhooks for subscribe/unsubscribe event delivery
-      - Team and user management
-      - OAuth 2.0 authentication
-    x-use-cases:
-      - Syncing contacts between Capsule and marketing tools
-      - Pushing new leads into the sales pipeline from web forms
-      - Automating follow-up tasks based on opportunity milestones
-      - Event-driven integration with accounting or support systems
-      - Reporting and analytics on pipeline, projects, and activities
-      - Embedding Capsule data in custom internal dashboards
+- aid: capsule:capsule-opportunities-api
+  name: Capsule Opportunities API
+  description: The Opportunities API from Capsule — 7 operation(s) for opportunities.
+  humanURL: https://developer.capsulecrm.com/
+  tags:
+  - Opportunities
+  properties:
+  - type: OpenAPI
+    url: openapi/capsule-opportunities-api-openapi.yml
+  - type: Documentation
+    url: https://developer.capsulecrm.com/
+  - type: Authentication
+    url: https://developer.capsulecrm.com/v2/overview/authentication
+  - type: Webhooks
+    url: https://developer.capsulecrm.com/v2/resources/rest-hooks
+- aid: capsule:capsule-parties-api
+  name: Capsule Parties API
+  description: The Parties API from Capsule — 5 operation(s) for parties.
+  humanURL: https://developer.capsulecrm.com/
+  tags:
+  - Parties
+  properties:
+  - type: OpenAPI
+    url: openapi/capsule-parties-api-openapi.yml
+  - type: Documentation
+    url: https://developer.capsulecrm.com/
+  - type: Authentication
+    url: https://developer.capsulecrm.com/v2/overview/authentication
+  - type: Webhooks
+    url: https://developer.capsulecrm.com/v2/resources/rest-hooks
+- aid: capsule:capsule-projects-api
+  name: Capsule Projects API
+  description: The Projects API from Capsule — 5 operation(s) for projects.
+  humanURL: https://developer.capsulecrm.com/
+  tags:
+  - Projects
+  properties:
+  - type: OpenAPI
+    url: openapi/capsule-projects-api-openapi.yml
+  - type: Documentation
+    url: https://developer.capsulecrm.com/
+  - type: Authentication
+    url: https://developer.capsulecrm.com/v2/overview/authentication
+  - type: Webhooks
+    url: https://developer.capsulecrm.com/v2/resources/rest-hooks
+- aid: capsule:capsule-tasks-api
+  name: Capsule Tasks API
+  description: The Tasks API from Capsule — 2 operation(s) for tasks.
+  humanURL: https://developer.capsulecrm.com/
+  tags:
+  - Tasks
+  properties:
+  - type: OpenAPI
+    url: openapi/capsule-tasks-api-openapi.yml
+  - type: Documentation
+    url: https://developer.capsulecrm.com/
+  - type: Authentication
+    url: https://developer.capsulecrm.com/v2/overview/authentication
+  - type: Webhooks
+    url: https://developer.capsulecrm.com/v2/resources/rest-hooks
 common:
   - type: AgenticAccess
     url: agentic-access/capsule-agentic-access.yml
