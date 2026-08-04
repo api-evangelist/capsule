@@ -1,0 +1,20 @@
+{
+  "provider": "capsule",
+  "sources": [
+    "capsule-opportunities-api-openapi.yml",
+    "capsule-parties-api-openapi.yml",
+    "capsule-projects-api-openapi.yml",
+    "capsule-tasks-api-openapi.yml"
+  ],
+  "outputs": [
+    "capsule-opportunities-api-openapi.yml",
+    "capsule-parties-api-openapi.yml",
+    "capsule-projects-api-openapi.yml",
+    "capsule-tasks-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
