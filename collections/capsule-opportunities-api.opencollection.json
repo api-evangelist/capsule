@@ -1,0 +1,238 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Capsule CRM REST Opportunities API",
+    "version": "2.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Opportunities",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List opportunities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.capsulecrm.com/api/v2/opportunities",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "perPage",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List opportunities"
+        },
+        {
+          "info": {
+            "name": "Create an opportunity",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.capsulecrm.com/api/v2/opportunities",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an opportunity"
+        },
+        {
+          "info": {
+            "name": "Show an opportunity",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.capsulecrm.com/api/v2/opportunities/:opportunityId",
+            "params": [
+              {
+                "name": "opportunityId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Show an opportunity"
+        },
+        {
+          "info": {
+            "name": "Update an opportunity",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.capsulecrm.com/api/v2/opportunities/:opportunityId",
+            "params": [
+              {
+                "name": "opportunityId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an opportunity"
+        },
+        {
+          "info": {
+            "name": "Delete an opportunity",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.capsulecrm.com/api/v2/opportunities/:opportunityId",
+            "params": [
+              {
+                "name": "opportunityId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete an opportunity"
+        },
+        {
+          "info": {
+            "name": "List deleted opportunities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.capsulecrm.com/api/v2/opportunities/deleted",
+            "params": [
+              {
+                "name": "since",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List deleted opportunities"
+        },
+        {
+          "info": {
+            "name": "Search opportunities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.capsulecrm.com/api/v2/opportunities/search",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Search opportunities"
+        },
+        {
+          "info": {
+            "name": "List additional parties on an opportunity",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.capsulecrm.com/api/v2/opportunities/:opportunityId/parties",
+            "params": [
+              {
+                "name": "opportunityId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List additional parties on an opportunity"
+        },
+        {
+          "info": {
+            "name": "Add an additional party to an opportunity",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.capsulecrm.com/api/v2/opportunities/:opportunityId/parties/:partyId",
+            "params": [
+              {
+                "name": "opportunityId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "partyId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Add an additional party to an opportunity"
+        },
+        {
+          "info": {
+            "name": "Remove an additional party from an opportunity",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.capsulecrm.com/api/v2/opportunities/:opportunityId/parties/:partyId",
+            "params": [
+              {
+                "name": "opportunityId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "partyId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Remove an additional party from an opportunity"
+        },
+        {
+          "info": {
+            "name": "List opportunities for a party",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.capsulecrm.com/api/v2/parties/:partyId/opportunities",
+            "params": [
+              {
+                "name": "partyId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List opportunities for a party"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
