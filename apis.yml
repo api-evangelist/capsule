@@ -36,6 +36,17 @@ tags:
   - Project Management
   - REST
   - Sales
+  - Task
+  - Webhook
+tags_raw:
+  - Contact Management
+  - CRM
+  - Custom Fields
+  - Opportunities
+  - Pipelines
+  - Project Management
+  - REST
+  - Sales
   - Tasks
   - Webhooks
 created: '2025-01-01'
@@ -77,6 +88,8 @@ apis:
   description: The Projects API from Capsule — 5 operation(s) for projects.
   humanURL: https://developer.capsulecrm.com/
   tags:
+  - Project
+  tags_raw:
   - Projects
   properties:
   - type: OpenAPI
@@ -92,6 +105,8 @@ apis:
   description: The Tasks API from Capsule — 2 operation(s) for tasks.
   humanURL: https://developer.capsulecrm.com/
   tags:
+  - Task
+  tags_raw:
   - Tasks
   properties:
   - type: OpenAPI
