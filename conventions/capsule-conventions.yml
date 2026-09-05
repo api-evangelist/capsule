@@ -1,0 +1,144 @@
+generated: '2026-09-05'
+method: searched
+source: https://developer.capsulecrm.com/v2/overview/
+description: >-
+  Cross-cutting runtime semantics for the Capsule v2 REST API, read from the
+  provider's own overview documentation and cross-checked against the captured
+  OpenAPI.
+base_url: https://api.capsulecrm.com/api/v2
+media_type: application/json
+media_type_note: >-
+  "All endpoints return JSON exclusively"; the docs recommend sending
+  Accept: application/json and Content-Type: application/json on writes.
+  Responses are minified in production.
+authentication:
+  style: bearer
+  header: 'Authorization: Bearer {token}'
+  token_kinds:
+  - personal access token (My Preferences > API Authentication Tokens)
+  - OAuth 2.0 authorization-code access token
+  docs: https://developer.capsulecrm.com/v2/overview/authentication
+  see: authentication/capsule-authentication.yml
+idempotency:
+  supported: false
+  coverage: none
+  mechanism: null
+  header: null
+  retention: null
+  docs: https://developer.capsulecrm.com/v2/overview/writing-to-the-api
+  note: >-
+    Capsule documents no Idempotency-Key header and no replay-protection
+    mechanism of any kind on its write surface. POST /parties, POST
+    /opportunities, POST /kases and POST /tasks are all replayable: a retried
+    create makes a second record. This is an honest "none", read from the
+    write-operations page on 2026-09-05, not an unchecked default.
+reversibility:
+  grade: none
+  read_only: false
+  surfaces:
+  - write: 'POST /parties, POST /opportunities, POST /kases, POST /tasks'
+    reversal: 'DELETE on the created resource'
+    reversal_operation: 'DELETE /parties/{partyId} | /opportunities/{opportunityId} | /kases/{projectId} | /tasks/{taskId}'
+    window: null
+    docs: https://developer.capsulecrm.com/v2/overview/writing-to-the-api
+    note: >-
+      A create can be undone by deleting the record, but that is destruction,
+      not reversal - the deleted record is not restorable through the API.
+  - write: 'DELETE /parties/{partyId} and the other DELETE operations'
+    reversal: null
+    reversal_operation: null
+    window: null
+    note: >-
+      No restore, undelete, undo or rollback operation is documented anywhere
+      in the Capsule v2 API. The /parties/deleted, /opportunities/deleted and
+      /kases/deleted endpoints LIST records that were deleted so a
+      synchronising client can drop them; they do not bring them back.
+  - write: 'PUT /parties/{partyId} and the other PUT operations'
+    reversal: null
+    reversal_operation: null
+    window: null
+    note: >-
+      Updates are partial-merge and non-versioned; the API returns no prior
+      state and offers no revert. An agent that overwrites a field cannot get
+      the previous value back from the API.
+  note: >-
+    Grade is "none", not "documented": no reversal path exists for the
+    destructive operations, and no window is stated for anything. Capsule's
+    web UI may offer recovery; the API does not document one, and no window
+    was invented here.
+pagination:
+  style: page-number
+  params:
+  - {name: page, in: query, default: 1, description: 1-based page number}
+  - {name: perPage, in: query, default: 50, max: 100, description: page size}
+  response_fields: null
+  link_header: true
+  link_header_note: >-
+    RFC 5988 Link header with rel="next" and rel="prev"; the docs say to
+    follow these rather than construct URLs.
+  docs: https://developer.capsulecrm.com/v2/overview/reading-from-the-api
+expansion:
+  supported: true
+  param: embed
+  style: comma-separated field list
+  example: '?embed=tags,fields'
+  note: Supported embed values vary per endpoint.
+  docs: https://developer.capsulecrm.com/v2/overview/reading-from-the-api
+request_envelope:
+  style: single-key wrapper
+  example: '{"party": {"type": "organisation", "name": "Acme INC"}}'
+  note: >-
+    Write bodies are wrapped in a key named for the resource; responses use
+    the same wrapper.
+  docs: https://developer.capsulecrm.com/v2/overview/writing-to-the-api
+error_envelope:
+  format: vendor-json
+  rfc9457: false
+  fields:
+  - message
+  - resource
+  - field
+  note: >-
+    Validation failures (422) return a body describing which resource and
+    field failed. Not application/problem+json.
+  see: errors/capsule-problem-types.yml
+rate_limit_signaling:
+  headers:
+  - X-RateLimit-Limit
+  - X-RateLimit-Remaining
+  - X-RateLimit-Reset
+  status_on_exhaustion: 429
+  retry_after: false
+  retry_after_note: >-
+    Capsule does not document a Retry-After header; clients are told to wait
+    until the epoch second in X-RateLimit-Reset.
+  see: rate-limits/capsule-rate-limits.yml
+async_operations:
+  supported: true
+  status: 202
+  mechanism: >-
+    Long-running operations return 202 Accepted with a Location header
+    pointing at a job status endpoint to poll.
+  docs: https://developer.capsulecrm.com/v2/overview/handling-api-responses
+versioning:
+  scheme: path
+  current: v2
+  path_prefix: /api/v2
+  policy_statement: >-
+    "We continue to enhance the Capsule API and add additional resources,
+    parameters and elements into responses... We'll always try to avoid
+    breaking changes to existing resources on the API without notice."
+  additive_change_contract: >-
+    Clients are explicitly told to tolerate new elements appearing in
+    responses.
+  see: lifecycle/capsule-lifecycle.yml
+dry_run_mode:
+  supported: false
+  note: No preview, validate-only or dry-run parameter is documented.
+webhooks:
+  supported: true
+  style: REST Hooks
+  see: asyncapi/capsule-rest-hooks-webhooks.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

@@ -1,0 +1,128 @@
+generated: '2026-09-05'
+method: searched
+source: https://zestia.github.io/capsule-mcp-scala/
+name: Capsule MCP Server
+status: published
+description: >-
+  First-party Model Context Protocol server for Capsule CRM, published by
+  Zestia Ltd (the company that operates Capsule - the capsulecrm.com CAA
+  record names caa-iodef@zestia.com, and the repository is Apache-2.0 under
+  github.com/zestia). Announced on the Capsule developer changelog on
+  15 April 2026 as a private beta. It is a LOCAL server: an AI assistant runs
+  it as a Docker container over stdio on the operator's own machine, and it
+  calls the Capsule v2 REST API directly with a personal API token. There is
+  no hosted/remote MCP endpoint an agent can POST to.
+deployment:
+  mode: local-stdio
+  endpoint: null
+  install: 'docker run -i --rm -e CAPSULE_API_TOKEN=your-api-token ghcr.io/zestia/capsule-mcp-scala:latest'
+  package: https://github.com/zestia/capsule-mcp-scala
+  auth: api-key
+  verified: searched
+  note: >-
+    Install string copied verbatim from the quickstart config block at
+    https://zestia.github.io/capsule-mcp-scala/ (mcpServers.capsule-mcp.args).
+    mcp.capsulecrm.com and https://api.capsulecrm.com/mcp were both probed and
+    are NOT MCP endpoints - the former redirects to a Google sign-in page, the
+    latter returns the api host's HTML "account does not exist" shell with a
+    200. No remote endpoint was found, so mode is local-stdio, not both.
+access:
+  beta: true
+  beta_note: >-
+    Private beta. Early access is requested from inside a Capsule account
+    (Integrations > "Capsule MCP Server" > Request early access). Capsule's
+    blog states Growth plan and above, free during the beta.
+  plan_requirement: Growth or above
+  clients_supported:
+  - Claude Desktop
+  - Cursor
+  read_only: true
+  read_only_evidence: >-
+    "This server currently only supports read-only access and cannot be used
+    to modify your Capsule data." - https://zestia.github.io/capsule-mcp-scala/
+repository:
+  url: https://github.com/zestia/capsule-mcp-scala
+  language: Scala 3
+  license: Apache-2.0
+  documented_version: 0.1.0
+  last_pushed: '2026-05-01'
+  image: ghcr.io/zestia/capsule-mcp-scala:latest
+  first_party: true
+  first_party_evidence: >-
+    Published under github.com/zestia; Zestia Ltd operates Capsule. The Capsule
+    developer changelog (15 April 2026) announces the same server, and the
+    docs site zestia.github.io/capsule-mcp-scala is the one the README points at.
+runtime:
+  transport: stdio
+  container: docker
+  env:
+  - name: CAPSULE_API_TOKEN
+    required: true
+    description: >-
+      Capsule personal API token created at My Preferences > API
+      Authentication Tokens, scoped to "Read information from your Capsule
+      account" only.
+  - name: CAPSULE_BASE_URL
+    required: false
+    default: https://api.capsulecrm.com
+    description: Override to target a different Capsule instance.
+tools_source: https://zestia.github.io/capsule-mcp-scala/available-tools.html
+tool_count: 49
+tools:
+- {name: list_contacts, group: Contacts, description: Retrieve Contacts with comprehensive filtering ability, paginated: true}
+- {name: get_contact, group: Contacts, description: Get Contact by ID, paginated: false}
+- {name: list_opportunities, group: Opportunities, description: Retrieve Opportunities with comprehensive filtering ability, paginated: true}
+- {name: get_opportunity, group: Opportunities, description: Get Opportunity by ID, paginated: false}
+- {name: calculate_value_of_opportunities, group: Opportunities, description: Retrieves Total & Projected Values for Opportunities with comprehensive filtering ability, paginated: false}
+- {name: list_projects, group: Projects, description: Retrieve Projects with comprehensive filtering ability, paginated: true}
+- {name: list_contact_custom_fields, group: Custom Fields, description: Retrieves Custom Fields defined for Contacts, paginated: true}
+- {name: list_opportunity_custom_fields, group: Custom Fields, description: Retrieves Custom Fields defined for Opportunities, paginated: true}
+- {name: list_project_custom_fields, group: Custom Fields, description: Retrieves Custom Fields defined for Projects, paginated: true}
+- {name: get_contact_custom_field, group: Custom Fields, description: Get Contact Custom Field Definition by ID, paginated: false}
+- {name: get_opportunity_custom_field, group: Custom Fields, description: Get Opportunity Custom Field Definition by ID, paginated: false}
+- {name: get_project_custom_field, group: Custom Fields, description: Get Project Custom Field Definition by ID, paginated: false}
+- {name: list_custom_fields_for_contact_data_tag, group: Custom Fields, description: List Custom Fields defined for a Contact DataTag, paginated: true}
+- {name: list_custom_fields_for_opportunity_data_tag, group: Custom Fields, description: List Custom Fields defined for an Opportunity DataTag, paginated: true}
+- {name: list_custom_fields_for_project_data_tag, group: Custom Fields, description: List Custom Fields defined for a Project DataTag, paginated: true}
+- {name: list_pipelines, group: Sales Pipelines, description: Retrieves Sales Pipelines defined for Opportunities with optional searching by name, paginated: true}
+- {name: get_pipeline, group: Sales Pipelines, description: Get Pipeline by ID, paginated: false}
+- {name: list_milestones, group: Milestones, description: Retrieves Milestones defined across all Sales Pipelines, paginated: true}
+- {name: list_milestones_by_pipeline, group: Milestones, description: Retrieves Milestones for a given Sales Pipeline, paginated: true}
+- {name: get_milestone, group: Milestones, description: Get Milestone by ID, paginated: false}
+- {name: list_lost_reasons, group: Lost Reasons, description: Retrieves Lost Reasons with optional searching by name, paginated: true}
+- {name: get_lost_reason, group: Lost Reasons, description: Get Lost Reason by ID, paginated: false}
+- {name: list_boards, group: Project Boards, description: Retrieves Project Boards with optional searching by name, paginated: true}
+- {name: get_board, group: Project Boards, description: Get Project Board by ID, paginated: false}
+- {name: list_stages, group: Stages, description: Retrieves Stages defined across all Project Boards, paginated: true}
+- {name: get_stage, group: Stages, description: Get Project Stage, paginated: false}
+- {name: list_stages_by_board, group: Stages, description: Retrieves Stages for a given Project Board, paginated: true}
+- {name: list_contact_tags, group: Tags, description: Retrieves Tags defined for Contacts, paginated: true}
+- {name: list_opportunity_tags, group: Tags, description: Retrieves Tags defined for Opportunities, paginated: true}
+- {name: list_project_tags, group: Tags, description: Retrieves Tags defined for Projects, paginated: true}
+- {name: get_contact_tag, group: Tags, description: Get Contact Tag Definition by ID, paginated: false}
+- {name: get_opportunity_tag, group: Tags, description: Get Opportunity Tag Definition by ID, paginated: false}
+- {name: get_project_tag, group: Tags, description: Get Project Tag Definition by ID, paginated: false}
+- {name: list_users, group: Users, description: Retrieves all Users, paginated: false}
+- {name: get_user, group: Users, description: Get User by ID, paginated: false}
+- {name: get_current_user, group: Users, description: Get current User, paginated: false}
+- {name: list_teams, group: Teams, description: Retrieves all Teams and Team members, paginated: false}
+- {name: get_team, group: Teams, description: Get Team by ID, paginated: false}
+- {name: list_tasks, group: Tasks, description: Retrieve Tasks with basic filtering ability, paginated: true}
+- {name: get_task, group: Tasks, description: Get Task by ID, paginated: false}
+- {name: get_track, group: Tracks, description: Get Track by ID, paginated: false}
+- {name: list_tracks_for_contact, group: Tracks, description: List Tracks for specified Contact, paginated: true}
+- {name: list_tracks_for_opportunity, group: Tracks, description: List Tracks for specified Opportunity, paginated: true}
+- {name: list_tracks_for_project, group: Tracks, description: List Tracks for specified Project, paginated: true}
+- {name: list_activity, group: Activity, description: Retrieve Activity with basic filtering ability, paginated: true}
+- {name: list_entries_for_contact, group: Activity, description: Retrieve Entries for specified Contact, paginated: true}
+- {name: list_entries_for_project, group: Activity, description: Retrieve Entries for specified Project, paginated: true}
+- {name: list_entries_for_opportunity, group: Activity, description: Retrieve Entries for specified Opportunity, paginated: true}
+- {name: get_entry, group: Activity, description: Get Entry by ID, paginated: false}
+schema_note: >-
+  Tool names and descriptions are transcribed from the provider's published
+  Available Tools table. Per-tool inputSchema was NOT captured: the server is
+  local-only, so there is no anonymous endpoint to POST tools/list at. Input
+  schemas require running the container with a real Capsule API token.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

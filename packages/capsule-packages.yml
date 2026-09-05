@@ -1,0 +1,96 @@
+generated: '2026-09-05'
+method: searched
+source: >-
+  registry.npmjs.org, pypi.org, rubygems.org, packagist.org +
+  https://developer.capsulecrm.com/v2/overview/third-party-tools
+description: >-
+  Client libraries for the Capsule v2 REST API. THE HEADLINE FINDING IS AN
+  ABSENCE: Capsule publishes NO first-party SDK in any language. Its own
+  "Third party tools" page lists only integration platforms and unified-API
+  vendors, and states explicitly that they are not officially reviewed by
+  Capsule. Every package below is community-authored, and every one of them
+  is abandoned - the newest first-class client library release is from 2015.
+official_sdk_count: 0
+package_count: 5
+official: false
+first_party_note: >-
+  The one piece of first-party distributable software Capsule (Zestia) ships
+  is the MCP server container ghcr.io/zestia/capsule-mcp-scala - see
+  mcp/capsule-mcp.yml. It is an agent server, not an API client library, so
+  it is not counted as an SDK here.
+packages:
+- name: capsule_crm
+  language: Ruby
+  registry: rubygems
+  url: https://rubygems.org/gems/capsule_crm
+  version: 1.10.4
+  published: '2015-06-21'
+  official: false
+  description: Gem to communicate with CapsuleCRM.
+  note: >-
+    The most complete community client found. Last released 2015-06-21 -
+    eleven years before this probe, and before Projects/Boards/Tracks/Goals
+    and multiple pipelines existed in the API.
+- name: capsule-crm
+  language: JavaScript
+  registry: npm
+  url: https://www.npmjs.com/package/capsule-crm
+  version: 0.0.8
+  published: '2013-03-07'
+  official: false
+  repository: https://github.com/bug-buster/capsule-crm
+  description: Node helper for Capsule CRM.
+  note: Abandoned; predates the v2 API entirely.
+- name: capsule-crm
+  language: Python
+  registry: pypi
+  url: https://pypi.org/project/capsule-crm/
+  version: 0.1.2
+  published: '2013-11-19'
+  official: false
+  repository: https://github.com/leetrout/python-capsule-crm
+  description: Capsule CRM Python API wrapper.
+  note: Abandoned; predates the v2 API.
+- name: capsulecrm
+  language: Ruby
+  registry: rubygems
+  url: https://rubygems.org/gems/capsulecrm
+  version: 0.0.3
+  published: '2011-04-18'
+  official: false
+  description: Wraps up a CapsuleCRM API.
+  note: Abandoned.
+- name: blackquadrant/capsule-crm-api-wrapper-php
+  language: PHP
+  registry: packagist
+  url: https://packagist.org/packages/blackquadrant/capsule-crm-api-wrapper-php
+  version: null
+  published: null
+  official: false
+  description: PHP API wrapper for Capsule CRM.
+  note: >-
+    version/published recorded as null - the Packagist search endpoint
+    returns no version metadata and the package page was not fetched. Checked,
+    not guessed.
+provider_listed_tools:
+  note: >-
+    These are the integration vendors Capsule lists on its Third party tools
+    page. They are platforms, not client libraries, and Capsule states they
+    are not officially reviewed. Listed for completeness; none is an SDK.
+  source: https://developer.capsulecrm.com/v2/overview/third-party-tools
+  tools:
+  - {name: Skyvia, url: 'https://skyvia.com/connectors/capsule-crm', kind: etl}
+  - {name: Zapier, url: 'https://capsulecrm.com/integrations/zapier-crm/', kind: ipaas}
+  - {name: Make, url: 'https://www.make.com/en/integrations/capsule-crm', kind: ipaas}
+  - {name: Ampersand, url: 'https://www.withampersand.com/integrations/capsule', kind: unified-api}
+  - {name: Merge, url: 'https://www.merge.dev/integrations/capsule', kind: unified-api}
+  - {name: Truto, url: 'https://truto.one/integrations/detail/capsule', kind: unified-api}
+registries_checked:
+- {registry: npm, query: capsulecrm / capsule-crm, first_party_hits: 0}
+- {registry: pypi, query: capsulecrm / capsule-crm, first_party_hits: 0}
+- {registry: rubygems, query: capsulecrm, first_party_hits: 0}
+- {registry: packagist, query: capsulecrm, first_party_hits: 0}
+- {registry: github, org: zestia, note: '39 public repos; no client SDK for the Capsule API, only Ember addons, build tooling and the MCP server.'}
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

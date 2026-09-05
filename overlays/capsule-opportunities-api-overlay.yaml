@@ -1,0 +1,251 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enrichment overlay for Capsule CRM REST Opportunities API
+  version: 1.0.0
+  x-generated: '2026-09-05'
+  x-method: generated
+  x-source: https://developer.capsulecrm.com/v2/overview/ + api.capsulecrm.com/.well-known/
+  description: 'Non-destructive overlay carrying API Evangelist enrichments: proposed operationIds (the
+    base contract declares none), the OAuth 2.0/OIDC schemes Capsule serves from discovery, published
+    rate-limit and error semantics, pagination, and a per-write reversibility record. Apply with an OpenAPI
+    Overlay 1.0.0 processor; the base document in openapi/ is never mutated.'
+extends: capsule-opportunities-api-openapi.yml
+actions:
+- target: $.info
+  description: Record the API Evangelist enrichment provenance and the runtime semantics Capsule documents
+    outside the contract.
+  update:
+    x-apis-io-enrichment:
+      generated: '2026-09-05'
+      artifacts:
+      - conventions/capsule-conventions.yml
+      - errors/capsule-problem-types.yml
+      - rate-limits/capsule-rate-limits.yml
+      - authentication/capsule-authentication.yml
+      - scopes/capsule-scopes.yml
+      - mcp/capsule-mcp.yml
+      - asyncapi/capsule-rest-hooks-webhooks.yml
+    x-rate-limit:
+      limit: 4000
+      window: hour
+      scope: per Capsule user
+      headers:
+      - X-RateLimit-Limit
+      - X-RateLimit-Remaining
+      - X-RateLimit-Reset
+      status: 429
+      source: https://developer.capsulecrm.com/v2/overview/handling-api-responses
+    x-idempotency:
+      supported: false
+      coverage: none
+      source: https://developer.capsulecrm.com/v2/overview/writing-to-the-api
+    x-error-format:
+      rfc9457: false
+      fields:
+      - message
+      - resource
+      - field
+      source: https://developer.capsulecrm.com/v2/overview/handling-api-responses
+- target: $.components.securitySchemes
+  description: Add the OAuth 2.0 / OpenID Connect schemes Capsule serves from its discovery documents,
+    alongside the bearer scheme already in the contract.
+  update:
+    capsuleOAuth:
+      type: oauth2
+      description: Capsule OAuth 2.0 authorization code flow with PKCE. Access tokens expire after 604799
+        seconds.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.capsulecrm.com/oauth/authorise
+          tokenUrl: https://api.capsulecrm.com/oauth/token
+          refreshUrl: https://api.capsulecrm.com/oauth/token
+          scopes:
+            read: Read-only access to Capsule data
+            write: Create, update and delete Capsule data
+            user_preference: Access the authenticated user's preferences
+            openid: Request an OpenID Connect ID token
+            profile: OIDC profile claims
+            email: OIDC email claim
+            tenant: Capsule tenant/subdomain claim
+    capsuleOpenId:
+      type: openIdConnect
+      openIdConnectUrl: https://api.capsulecrm.com/.well-known/openid-configuration
+      description: Capsule is a full OpenID Provider; discovery and JWKS are served on the API host.
+- target: $.paths['/opportunities'].get
+  description: Propose a stable operationId for GET /opportunities; the published contract declares none.
+  update:
+    operationId: listOpportunities
+- target: $.paths['/opportunities'].post
+  description: Propose a stable operationId for POST /opportunities; the published contract declares none.
+  update:
+    operationId: createOpportunities
+- target: $.paths['/opportunities/{opportunityId}'].get
+  description: Propose a stable operationId for GET /opportunities/{opportunityId}; the published contract
+    declares none.
+  update:
+    operationId: getOpportunities
+- target: $.paths['/opportunities/{opportunityId}'].put
+  description: Propose a stable operationId for PUT /opportunities/{opportunityId}; the published contract
+    declares none.
+  update:
+    operationId: updateOpportunities
+- target: $.paths['/opportunities/{opportunityId}'].delete
+  description: Propose a stable operationId for DELETE /opportunities/{opportunityId}; the published contract
+    declares none.
+  update:
+    operationId: deleteOpportunities
+- target: $.paths['/opportunities/deleted'].get
+  description: Propose a stable operationId for GET /opportunities/deleted; the published contract declares
+    none.
+  update:
+    operationId: listDeletedOpportunities
+- target: $.paths['/opportunities/search'].get
+  description: Propose a stable operationId for GET /opportunities/search; the published contract declares
+    none.
+  update:
+    operationId: searchOpportunities
+- target: $.paths['/opportunities/{opportunityId}/parties'].get
+  description: Propose a stable operationId for GET /opportunities/{opportunityId}/parties; the published
+    contract declares none.
+  update:
+    operationId: listOpportunitiesParties
+- target: $.paths['/opportunities/{opportunityId}/parties/{partyId}'].post
+  description: Propose a stable operationId for POST /opportunities/{opportunityId}/parties/{partyId};
+    the published contract declares none.
+  update:
+    operationId: createOpportunitiesParties
+- target: $.paths['/opportunities/{opportunityId}/parties/{partyId}'].delete
+  description: Propose a stable operationId for DELETE /opportunities/{opportunityId}/parties/{partyId};
+    the published contract declares none.
+  update:
+    operationId: deleteOpportunitiesParties
+- target: $.paths['/parties/{partyId}/opportunities'].get
+  description: Propose a stable operationId for GET /parties/{partyId}/opportunities; the published contract
+    declares none.
+  update:
+    operationId: listPartiesOpportunities
+- target: $.paths['/opportunities'].get
+  description: Document the page/perPage pagination and RFC 5988 Link header behaviour on /opportunities.
+  update:
+    x-pagination:
+      style: page-number
+      params:
+        page:
+          default: 1
+        perPage:
+          default: 50
+          max: 100
+      link_header: true
+      rels:
+      - next
+      - prev
+      source: https://developer.capsulecrm.com/v2/overview/reading-from-the-api
+- target: $.paths['/opportunities'].post
+  description: Record reversibility for POST /opportunities. Capsule documents no restore path and no
+    window.
+  update:
+    x-reversibility:
+      grade: none
+      reversal_operation: null
+      window: null
+      source: https://developer.capsulecrm.com/v2/overview/writing-to-the-api
+- target: $.paths['/opportunities/{opportunityId}'].put
+  description: Record reversibility for PUT /opportunities/{opportunityId}. Capsule documents no restore
+    path and no window.
+  update:
+    x-reversibility:
+      grade: none
+      reversal_operation: null
+      window: null
+      source: https://developer.capsulecrm.com/v2/overview/writing-to-the-api
+- target: $.paths['/opportunities/{opportunityId}'].delete
+  description: Record reversibility for DELETE /opportunities/{opportunityId}. Capsule documents no restore
+    path and no window.
+  update:
+    x-reversibility:
+      grade: none
+      reversal_operation: null
+      window: null
+      source: https://developer.capsulecrm.com/v2/overview/writing-to-the-api
+- target: $.paths['/opportunities/deleted'].get
+  description: Document the page/perPage pagination and RFC 5988 Link header behaviour on /opportunities/deleted.
+  update:
+    x-pagination:
+      style: page-number
+      params:
+        page:
+          default: 1
+        perPage:
+          default: 50
+          max: 100
+      link_header: true
+      rels:
+      - next
+      - prev
+      source: https://developer.capsulecrm.com/v2/overview/reading-from-the-api
+- target: $.paths['/opportunities/search'].get
+  description: Document the page/perPage pagination and RFC 5988 Link header behaviour on /opportunities/search.
+  update:
+    x-pagination:
+      style: page-number
+      params:
+        page:
+          default: 1
+        perPage:
+          default: 50
+          max: 100
+      link_header: true
+      rels:
+      - next
+      - prev
+      source: https://developer.capsulecrm.com/v2/overview/reading-from-the-api
+- target: $.paths['/opportunities/{opportunityId}/parties'].get
+  description: Document the page/perPage pagination and RFC 5988 Link header behaviour on /opportunities/{opportunityId}/parties.
+  update:
+    x-pagination:
+      style: page-number
+      params:
+        page:
+          default: 1
+        perPage:
+          default: 50
+          max: 100
+      link_header: true
+      rels:
+      - next
+      - prev
+      source: https://developer.capsulecrm.com/v2/overview/reading-from-the-api
+- target: $.paths['/opportunities/{opportunityId}/parties/{partyId}'].post
+  description: Record reversibility for POST /opportunities/{opportunityId}/parties/{partyId}. Capsule
+    documents no restore path and no window.
+  update:
+    x-reversibility:
+      grade: none
+      reversal_operation: null
+      window: null
+      source: https://developer.capsulecrm.com/v2/overview/writing-to-the-api
+- target: $.paths['/opportunities/{opportunityId}/parties/{partyId}'].delete
+  description: Record reversibility for DELETE /opportunities/{opportunityId}/parties/{partyId}. Capsule
+    documents no restore path and no window.
+  update:
+    x-reversibility:
+      grade: none
+      reversal_operation: null
+      window: null
+      source: https://developer.capsulecrm.com/v2/overview/writing-to-the-api
+- target: $.paths['/parties/{partyId}/opportunities'].get
+  description: Document the page/perPage pagination and RFC 5988 Link header behaviour on /parties/{partyId}/opportunities.
+  update:
+    x-pagination:
+      style: page-number
+      params:
+        page:
+          default: 1
+        perPage:
+          default: 50
+          max: 100
+      link_header: true
+      rels:
+      - next
+      - prev
+      source: https://developer.capsulecrm.com/v2/overview/reading-from-the-api

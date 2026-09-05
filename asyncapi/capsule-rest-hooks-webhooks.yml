@@ -1,0 +1,70 @@
+generated: '2026-09-05'
+method: searched
+source: https://developer.capsulecrm.com/v2/overview/avoid-polling-with-rest-hooks
+description: >-
+  Capsule's event surface. Capsule publishes no AsyncAPI document - probed
+  2026-09-05, no /asyncapi.yaml or /asyncapi.json on any host and nothing in
+  the zestia GitHub org. It DOES publish a complete REST Hooks webhook
+  catalogue, captured here.
+style: REST Hooks
+asyncapi_published: false
+protocol: HTTPS POST to a subscriber-supplied targetUrl
+management:
+  subscribe: 'POST /api/v2/resthooks'
+  unsubscribe: 'DELETE /api/v2/resthooks/{restHookId}'
+  list: 'GET /api/v2/resthooks'
+  show: 'GET /api/v2/resthooks/{restHookId}'
+  docs: https://developer.capsulecrm.com/v2/operations/REST_Hook
+  subscribe_body:
+    targetUrl: publicly reachable HTTPS endpoint that accepts POST
+    event: one of the event names below
+    description: optional
+  constraints:
+  - Only account administrators can manage hooks.
+  - Only registered OAuth applications can manage subscriptions.
+  - Maximum 20 subscriptions per account.
+payload:
+  shape: '{"event": "<event-name>", "payload": [ <affected entities, full objects> ]}'
+  batched: true
+  batched_note: payload is an ARRAY - one delivery can carry several affected entities.
+  signature_verification: null
+  signature_note: >-
+    Capsule documents no signature or shared-secret verification for webhook
+    deliveries. A receiver can only trust the targetUrl being unguessable and
+    TLS. Recorded as an honest absence, not an omission in this capture.
+delivery:
+  retries: 5
+  schedule:
+  - 5 seconds
+  - 1 minute
+  - 5 minutes
+  - 15 minutes
+  - 15 minutes
+  total_window: 36 minutes 5 seconds
+  on_failure: hook is marked dead and unsubscribed
+  auto_unsubscribe: >-
+    A receiver may return HTTP 410 Gone to unsubscribe itself.
+events:
+- {name: 'party/created', resource: Party, trigger: A contact or organisation is created}
+- {name: 'party/updated', resource: Party, trigger: A contact or organisation is updated}
+- {name: 'party/deleted', resource: Party, trigger: A contact or organisation is deleted}
+- {name: 'kase/created', resource: Project, trigger: A project (kase) is created}
+- {name: 'kase/updated', resource: Project, trigger: A project is updated}
+- {name: 'kase/deleted', resource: Project, trigger: A project is deleted}
+- {name: 'kase/closed', resource: Project, trigger: A project is closed}
+- {name: 'kase/moved', resource: Project, trigger: A project is moved to a different stage}
+- {name: 'opportunity/created', resource: Opportunity, trigger: An opportunity is created}
+- {name: 'opportunity/updated', resource: Opportunity, trigger: An opportunity is updated}
+- {name: 'opportunity/deleted', resource: Opportunity, trigger: An opportunity is deleted}
+- {name: 'opportunity/closed', resource: Opportunity, trigger: An opportunity is closed (won or lost)}
+- {name: 'opportunity/moved', resource: Opportunity, trigger: An opportunity is moved to a different milestone}
+- {name: 'task/created', resource: Task, trigger: A task is created}
+- {name: 'task/updated', resource: Task, trigger: A task is updated}
+- {name: 'task/completed', resource: Task, trigger: A task is completed}
+- {name: 'user/created', resource: User, trigger: A user is created}
+- {name: 'user/updated', resource: User, trigger: A user is updated}
+- {name: 'user/deleted', resource: User, trigger: A user is deleted}
+event_count: 19
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

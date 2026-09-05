@@ -1,0 +1,125 @@
+generated: '2026-09-05'
+method: searched
+source: https://api.capsulecrm.com/.well-known/openid-configuration + https://developer.capsulecrm.com/v2/overview/ + https://capsulecrm.com/security/
+description: >-
+  Cross-cutting standards the Capsule v2 REST API and its authorization server
+  actually conform to, each with the evidence that establishes it. Absences
+  are recorded as conforms:false rather than omitted.
+entries:
+- id: oauth2
+  conforms: true
+  evidence: >-
+    Authorization-code flow with refresh tokens at
+    https://api.capsulecrm.com/oauth/authorise and /oauth/token, documented at
+    https://developer.capsulecrm.com/v2/overview/authentication.
+- id: rfc8414
+  name: OAuth 2.0 Authorization Server Metadata
+  conforms: true
+  evidence: >-
+    https://api.capsulecrm.com/.well-known/oauth-authorization-server returns
+    200 with issuer, authorization_endpoint, token_endpoint,
+    revocation_endpoint, scopes_supported, grant_types_supported and
+    code_challenge_methods_supported. Probed 2026-09-05, saved to
+    well-known/capsule-oauth-authorization-server.json.
+- id: oidc
+  name: OpenID Connect Discovery 1.0
+  conforms: true
+  evidence: >-
+    https://api.capsulecrm.com/.well-known/openid-configuration returns 200
+    with jwks_uri, userinfo_endpoint, id_token_signing_alg_values_supported
+    (RS256) and claims_supported. JWKS served at
+    https://api.capsulecrm.com/.well-known/jwks.json. Probed 2026-09-05.
+- id: rfc7636
+  name: PKCE
+  conforms: true
+  evidence: >-
+    code_challenge_methods_supported = ["plain","S256"] in the authorization
+    server metadata.
+- id: rfc6750
+  name: OAuth 2.0 Bearer Token Usage
+  conforms: true
+  evidence: >-
+    "Authorization: Bearer {token}"; 401 and 403 responses carry a
+    WWW-Authenticate header.
+    https://developer.capsulecrm.com/v2/overview/authentication
+- id: rfc5988
+  name: Web Linking (Link header pagination)
+  conforms: true
+  evidence: >-
+    "The API provides pagination metadata via RFC 5988 Link headers with rel
+    values of next and prev."
+    https://developer.capsulecrm.com/v2/overview/reading-from-the-api
+- id: pagination
+  conforms: true
+  evidence: >-
+    page (default 1) and perPage (default 50, max 100) query parameters,
+    plus Link headers.
+    https://developer.capsulecrm.com/v2/overview/reading-from-the-api
+- id: rest-hooks
+  name: REST Hooks
+  conforms: true
+  evidence: >-
+    Subscription-managed webhooks with targetUrl/event registration and
+    HTTP 410 self-unsubscribe, the defining REST Hooks pattern.
+    https://developer.capsulecrm.com/v2/overview/avoid-polling-with-rest-hooks
+- id: mcp
+  name: Model Context Protocol
+  conforms: true
+  evidence: >-
+    First-party MCP server (zestia/capsule-mcp-scala, Apache-2.0) exposing 49
+    read tools over stdio. https://zestia.github.io/capsule-mcp-scala/
+- id: rfc9457
+  name: Problem Details for HTTP APIs
+  conforms: false
+  evidence: >-
+    Errors are vendor JSON with message/resource/field; no
+    application/problem+json is emitted.
+    https://developer.capsulecrm.com/v2/overview/handling-api-responses
+- id: idempotency
+  conforms: false
+  evidence: >-
+    No Idempotency-Key header or equivalent is documented on any write
+    operation. https://developer.capsulecrm.com/v2/overview/writing-to-the-api
+- id: rfc8594
+  name: Sunset header
+  conforms: false
+  evidence: No Deprecation or Sunset headers are documented or returned.
+- id: rfc9116
+  name: security.txt
+  conforms: false
+  evidence: >-
+    /.well-known/security.txt returns 404 on capsulecrm.com,
+    www.capsulecrm.com, api.capsulecrm.com and developer.capsulecrm.com.
+    Probed 2026-09-05.
+- id: scim
+  conforms: false
+  evidence: >-
+    No SCIM schema URNs or /scim endpoints. User and Team resources are
+    Capsule-proprietary.
+- id: odata
+  conforms: false
+  evidence: No $metadata surface or OData query options.
+- id: graphql
+  conforms: false
+  evidence: >-
+    No /graphql surface on api.capsulecrm.com or developer.capsulecrm.com.
+domain_standards:
+  applicable: false
+  note: >-
+    SMB CRM has no adopted interchange standard that a contract can declare -
+    there is no CRM equivalent of FHIR, FDX or SCIM in this market. Nothing
+    was invented to fill the slot. The nearest thing to a domain contract
+    Capsule speaks is REST Hooks, recorded above.
+compliance:
+  published: true
+  url: https://capsulecrm.com/security/
+  programs:
+  - GDPR
+  - PCI-DSS (payment collection)
+  infrastructure_certifications:
+  - ISO 27001 (AWS)
+  - SOC reports (AWS)
+  see: security/capsule-trust-center.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

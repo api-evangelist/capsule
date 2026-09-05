@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Capsule CRM REST Opportunities Projects API
   description: 'Capsule CRM v2 REST API for parties (contacts and companies),
@@ -123,28 +123,16 @@ paths:
         '200':
           $ref: '#/components/responses/ProjectList'
 components:
-  responses:
-    ProjectList:
-      description: List of projects.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              kases:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Project'
-    ProjectObject:
-      description: Project envelope.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProjectEnvelope'
   parameters:
     PartyId:
       in: path
       name: partyId
+      required: true
+      schema:
+        type: string
+    ProjectId:
+      in: path
+      name: projectId
       required: true
       schema:
         type: string
@@ -153,12 +141,6 @@ components:
       name: perPage
       schema:
         type: integer
-    ProjectId:
-      in: path
-      name: projectId
-      required: true
-      schema:
-        type: string
     Page:
       in: query
       name: page
@@ -173,6 +155,24 @@ components:
     Project:
       type: object
       additionalProperties: true
+  responses:
+    ProjectObject:
+      description: Project envelope.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProjectEnvelope'
+    ProjectList:
+      description: List of projects.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              kases:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
   securitySchemes:
     bearerAuth:
       type: http

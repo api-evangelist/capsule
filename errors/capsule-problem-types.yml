@@ -1,0 +1,42 @@
+generated: '2026-09-05'
+method: searched
+source: https://developer.capsulecrm.com/v2/overview/handling-api-responses
+description: >-
+  Error surface for the Capsule v2 REST API, read from the response-handling
+  documentation and cross-checked against the 4xx/5xx responses in the
+  captured OpenAPI.
+format: vendor-json
+rfc9457: false
+media_type: application/json
+envelope:
+  fields:
+  - {name: message, description: Human-readable description of what went wrong}
+  - {name: resource, description: The resource the failure relates to (validation failures)}
+  - {name: field, description: The field that failed validation (validation failures)}
+  note: >-
+    Capsule does not emit application/problem+json and publishes no error-code
+    registry - there are no stable machine-readable error codes, only HTTP
+    status plus a message string. An agent cannot branch on a code; it must
+    branch on status and, for 422, on resource/field.
+problem_types:
+- {status: 400, title: Bad Request, meaning: The request was malformed., remediation: Fix the request syntax or JSON body before retrying. Not retryable as sent.}
+- {status: 401, title: Unauthorized, meaning: The access token is missing, invalid or expired., remediation: 'Refresh the OAuth access token (they expire after 604,799 seconds) or reissue the personal access token. A WWW-Authenticate header accompanies the response.', retryable: after re-auth}
+- {status: 403, title: Forbidden, meaning: The token is valid but lacks the scope or account permission for this operation., remediation: Re-authorize with the required scope (read write, or read write user_preference). Retrying with the same token will not succeed., retryable: false}
+- {status: 404, title: Not Found, meaning: The addressed record does not exist or is not visible to this account., remediation: Re-resolve the id. For synchronisation, check the matching /deleted change feed., retryable: false}
+- {status: 422, title: Unprocessable Entity, meaning: Validation failed., remediation: Read resource and field in the body to identify the offending property; correct and resubmit., retryable: false}
+- {status: 429, title: Too Many Requests, meaning: The 4,000-requests-per-hour per-user quota is exhausted., remediation: Wait until the epoch second in X-RateLimit-Reset before issuing any further request. No Retry-After is sent., retryable: true}
+- {status: 5xx, title: Server Error, meaning: An unexpected server-side failure., remediation: Retry with backoff. Note there is no idempotency mechanism, so retrying a POST can create a duplicate record - see conventions/capsule-conventions.yml., retryable: with care}
+success_semantics:
+- {status: 200, meaning: Read or update succeeded; full record returned.}
+- {status: 201, meaning: Create succeeded; full record returned plus a Location header.}
+- {status: 202, meaning: Long-running operation accepted; poll the URL in the Location header for job status.}
+- {status: 204, meaning: Delete succeeded; no body.}
+gaps:
+- >-
+  No named error codes. Every failure is HTTP status plus prose, so error
+  handling cannot be exhaustive or forward-compatible.
+- >-
+  No documented error taxonomy for the REST Hooks delivery path.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

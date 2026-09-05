@@ -1,0 +1,81 @@
+# Capsule
+
+> Capsule is a CRM and project-management platform for small and mid-sized
+> businesses, operated by Zestia Ltd. The Capsule v2 REST API exposes parties
+> (contacts and companies), opportunities, projects, tasks, entries, tracks
+> and the settings behind them - pipelines, milestones, boards, stages, tags
+> and custom fields - with REST Hooks webhooks for event-driven integration
+> and a first-party read-only MCP server for AI assistants.
+
+Generated: 2026-09-05
+Method: generated
+Source: apis.yml + the artifacts in this repository. Capsule serves no
+llms.txt of its own - https://capsulecrm.com/llms.txt and
+https://developer.capsulecrm.com/llms.txt both returned 404 on 2026-09-05.
+
+Base URL: https://api.capsulecrm.com/api/v2
+Auth: Authorization: Bearer {token} - personal access token, or an OAuth 2.0
+authorization-code access token (PKCE supported, tokens live 604799s).
+Rate limit: 4,000 requests per hour per Capsule user. Watch
+X-RateLimit-Limit / X-RateLimit-Remaining / X-RateLimit-Reset; 429 on
+exhaustion, and there is no Retry-After - wait until X-RateLimit-Reset.
+No idempotency mechanism exists: a retried POST creates a duplicate record.
+No restore or undo exists: a DELETE is final as far as the API is concerned.
+
+## Documentation
+- [Developer portal](https://developer.capsulecrm.com/): entry point for the v2 REST API
+- [Authentication](https://developer.capsulecrm.com/v2/overview/authentication): personal access tokens and the OAuth 2.0 flow
+- [Reading from the API](https://developer.capsulecrm.com/v2/overview/reading-from-the-api): pagination (page, perPage max 100), Link headers, embed
+- [Writing to the API](https://developer.capsulecrm.com/v2/overview/writing-to-the-api): request envelopes, 201/204 semantics
+- [Handling API responses](https://developer.capsulecrm.com/v2/overview/handling-api-responses): status codes, validation errors, rate limits
+- [REST Hooks](https://developer.capsulecrm.com/v2/overview/avoid-polling-with-rest-hooks): webhook subscriptions instead of polling
+- [Announcements and changes](https://developer.capsulecrm.com/v2/overview/announcements-and-changes): the dated changelog
+- [Models](https://developer.capsulecrm.com/v2/models/): the object reference
+- [Third party tools](https://developer.capsulecrm.com/v2/overview/third-party-tools): integration platforms Capsule links to
+
+## Contracts in this repository
+- openapi/capsule-parties-api-openapi.yml: parties (contacts and organisations)
+- openapi/capsule-opportunities-api-openapi.yml: opportunities
+- openapi/capsule-projects-api-openapi.yml: projects, served at /kases
+- openapi/capsule-tasks-api-openapi.yml: tasks
+- overlays/: OpenAPI Overlay 1.0.0 documents adding proposed operationIds, the OAuth/OIDC schemes, and rate-limit, pagination and reversibility semantics
+
+Note: Capsule publishes no OpenAPI. These are API Evangelist representations
+of the published documentation, not vendor artifacts. Probed 2026-09-05:
+/openapi.json, /openapi.yaml and /swagger.json on api.capsulecrm.com return
+the host's HTML shell with a 200; developer.capsulecrm.com 404s.
+
+## Agent surfaces
+- [Capsule MCP Server](https://zestia.github.io/capsule-mcp-scala/): first-party, Apache-2.0, 49 read-only tools
+- Runs LOCALLY over stdio: `docker run -i --rm -e CAPSULE_API_TOKEN=... ghcr.io/zestia/capsule-mcp-scala:latest`
+- There is NO hosted/remote MCP endpoint. An agent cannot reach Capsule over MCP without a human installing Docker first.
+- Private beta, Growth plan and above; request access from Integrations inside a Capsule account
+- No A2A agent card is served on any Capsule host (probed 2026-09-05)
+- mcp/capsule-tool-crosswalk.yml maps each MCP tool to the REST operation behind it
+
+## Events
+- REST Hooks: 19 events across party, kase (project), opportunity, task and user
+- Subscribe with POST /api/v2/resthooks; max 20 subscriptions per account; OAuth applications only
+- Deliveries retry 5 times over ~36 minutes, then the hook is unsubscribed
+- No signature verification is published for webhook deliveries
+- No AsyncAPI document is published
+
+## Operations and trust
+- [Status page](https://status.capsulecrm.com/) and [incident RSS](https://status.capsulecrm.com/history.rss)
+- [Security](https://capsulecrm.com/security/): encryption, AWS hosting, penetration testing, PCI-DSS, GDPR
+- Security contact: support+sensitive@capsulecrm.com (no security.txt is served)
+- [GDPR](https://capsulecrm.com/gdpr/)
+- No formal deprecation policy, no Sunset headers, no published SLA
+
+## Commercial
+- [Pricing](https://capsulecrm.com/pricing): Free, Starter, Growth, Advanced, Ultimate
+- [Sign up](https://capsulecrm.com/signup/) - 14-day trial on paid plans, no card required
+- [Terms](https://capsulecrm.com/terms/) - [Privacy](https://capsulecrm.com/privacy/)
+- API access is included on every plan and is not metered separately
+
+## Known gaps
+- No first-party SDK in any language; every community client is abandoned (newest release 2015)
+- No operationIds in any published contract
+- No named error codes - only HTTP status plus a prose message
+- No sandbox or test environment is published
+- No CLI

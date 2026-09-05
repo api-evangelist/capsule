@@ -1,0 +1,93 @@
+generated: '2026-09-05'
+method: probed
+source: live GET of the named /.well-known/ paths on every host in apis.yml + openapi servers[]
+description: >-
+  Probe of the RFC 8615 well-known paths on every host this record knows.
+  api.capsulecrm.com serves real OAuth 2.0 Authorization Server Metadata
+  (RFC 8414) and OpenID Provider Configuration, plus the JWKS they reference.
+  The marketing site (capsulecrm.com / www) and the docs host
+  (developer.capsulecrm.com) serve none of these paths.
+hosts:
+- host: api.capsulecrm.com
+  documents:
+  - path: /.well-known/openid-configuration
+    status: 200
+    file: capsule-openid-configuration.json
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    file: capsule-oauth-authorization-server.json
+  - path: /.well-known/jwks.json
+    status: 200
+    file: capsule-jwks.json
+    note: >-
+      Not on the standard probe list; followed from jwks_uri in the
+      openid-configuration document.
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: capsulecrm.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: www.capsulecrm.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: developer.capsulecrm.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+notes:
+- >-
+  No security.txt is served on any host. Capsule publishes a security contact
+  (support+sensitive@capsulecrm.com) in prose at https://capsulecrm.com/security/
+  instead - see security/capsule-vulnerability-disclosure.yml.
+- >-
+  No A2A agent card on any host. Nothing was authored in a2a/ as a result.
+- >-
+  api.capsulecrm.com answers HTTP 200 with a "The account you were looking for
+  doesn't exist." HTML shell for unknown paths, so status codes alone lie on
+  that host; every result above was confirmed by reading the body.

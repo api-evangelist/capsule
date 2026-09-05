@@ -1,0 +1,99 @@
+generated: '2026-09-05'
+method: searched
+source: https://developer.capsulecrm.com/v2/overview/announcements-and-changes
+description: >-
+  Capsule's developer changelog, "Announcements & Changes". Dated but not
+  versioned - entries are prose notices on one page, with no release numbers,
+  no feed and no per-entry anchors.
+scheme: dated-notices
+current_version: v2
+version_note: >-
+  The API has been v2 throughout the captured history; there is no
+  independently versioned release train.
+feed: null
+breaking_change_contract: >-
+  "We continue to enhance the Capsule API and add additional resources,
+  parameters and elements into responses, etc. Please ensure that your app is
+  designed to handle additional elements that may be added to responses. We'll
+  always try to avoid breaking changes to existing resources on the API
+  without notice."
+entries:
+- date: '2026-08-19'
+  breaking: false
+  breaking_note: >-
+    Breaking only for integrations that PARSE the facehub URL; opaque
+    consumers are unaffected, which Capsule states explicitly.
+  highlights:
+  - >-
+    Facehub service retired. Party.pictureURL now returns a static default
+    image (cdn.capsulecrm.com/.../person.svg) instead of a generated
+    facehub.appspot.com URL when the party has no uploaded avatar.
+- date: '2026-04-15'
+  breaking: false
+  additions:
+  - Capsule MCP Server
+  highlights:
+  - >-
+    Local MCP (Model Context Protocol) server released as a private beta.
+    Read-only access to parties, opportunities, tasks and projects for
+    MCP-compatible tools (Claude for Desktop, Cursor). Runs as a local Docker
+    container; data does not pass through an external server.
+- date: '2026-03-23'
+  breaking: false
+  additions:
+  - Tracks on Parties
+  highlights:
+  - >-
+    Documented support for adding Tracks to Parties, matching existing Track
+    support on Opportunities and Projects.
+- date: '2025-11-17'
+  breaking: false
+  additions:
+  - Multi-Select List Field Definition
+  - Multi-Select List Field Value
+  highlights:
+  - Support for creating and using multi-select list custom fields.
+- date: '2025-10-08'
+  breaking: false
+  additions:
+  - Goals
+  highlights:
+  - >-
+    Goals documentation published - create, update and delete Goals.
+    Available on Starter plans and above.
+- date: '2024-04-17'
+  breaking: false
+  additions:
+  - Track Definition create/update/delete
+  highlights:
+  - Documentation for managing the templates behind Track instances.
+- date: '2022-06-30'
+  breaking: false
+  highlights:
+  - >-
+    Cases renamed as Projects across the product. "The API remains unchanged
+    and existing integrations will be unaffected. All endpoints will continue
+    to use the kases naming scheme." Board and Stage endpoints documented.
+- date: '2022-03-31'
+  breaking: false
+  highlights:
+  - >-
+    Track task definition docs updated - assigning track tasks to specific
+    users, excluding weekends from day gaps.
+- date: '2021-08-23'
+  breaking: false
+  additions:
+  - Multiple sales pipelines
+  highlights:
+  - Multiple sales pipelines for Growth plan accounts and above.
+- date: '2015-09-18'
+  breaking: false
+  highlights:
+  - >-
+    Rate limiting introduced, "with the limits set high so as not to break
+    existing integrations".
+entry_count: 10
+window: 2015-09-18 through 2026-08-19 (the full published page)
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

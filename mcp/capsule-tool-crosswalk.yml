@@ -1,0 +1,118 @@
+generated: '2026-09-05'
+method: derived
+source: mcp/capsule-mcp.yml + openapi/*.yml + https://developer.capsulecrm.com/v2/operations/
+description: >-
+  Binds each tool published by the first-party Capsule MCP server to the
+  Capsule v2 REST operation that backs it. The MCP server is a read-only
+  projection over the same api.capsulecrm.com/api/v2 surface, so every tool
+  has a REST ancestor - but the REST surface is much wider, because the MCP
+  server exposes no writes at all.
+surfaces:
+  openapi:
+  - openapi/capsule-parties-api-openapi.yml
+  - openapi/capsule-opportunities-api-openapi.yml
+  - openapi/capsule-projects-api-openapi.yml
+  - openapi/capsule-tasks-api-openapi.yml
+  openapi_note: >-
+    The OpenAPI files in this repo are a hand-authored API Evangelist
+    representation of the published documentation - Capsule publishes no
+    OpenAPI of its own (probed 2026-09-05: /openapi.json, /openapi.yaml,
+    /swagger.json on api.capsulecrm.com return the host's HTML shell with a
+    200; developer.capsulecrm.com 404s). They carry NO operationId values, so
+    the rest[] bindings below are METHOD + PATH, not operationIds.
+  graphql: null
+  mcp:
+    url: null
+    transport: stdio
+    gated: true
+    gated_reason: >-
+      Local Docker server in private beta; no anonymous endpoint exists, so
+      tools/list could not be called and inputSchema could not be read.
+crosswalk:
+- {tool: list_contacts, category: Contacts, rest: ['GET /parties', 'GET /parties/search'], binding: direct, confidence: high, note: 'Capsule "Contacts" are parties (person or organisation).'}
+- {tool: get_contact, category: Contacts, rest: ['GET /parties/{partyId}'], binding: direct, confidence: high}
+- {tool: list_opportunities, category: Opportunities, rest: ['GET /opportunities', 'GET /opportunities/search', 'GET /parties/{partyId}/opportunities'], binding: direct, confidence: high}
+- {tool: get_opportunity, category: Opportunities, rest: ['GET /opportunities/{opportunityId}'], binding: direct, confidence: high}
+- {tool: calculate_value_of_opportunities, category: Opportunities, rest: ['GET /opportunities'], binding: composite, confidence: medium, note: 'Aggregation the REST API does not expose; the server sums value/expectedValue over a filtered opportunity list.'}
+- {tool: list_projects, category: Projects, rest: ['GET /kases', 'GET /kases/search', 'GET /parties/{partyId}/kases'], binding: direct, confidence: high, note: 'Projects were renamed from Cases in 2022; the REST paths remain /kases.'}
+- {tool: list_tasks, category: Tasks, rest: ['GET /tasks'], binding: direct, confidence: high}
+- {tool: get_task, category: Tasks, rest: ['GET /tasks/{taskId}'], binding: direct, confidence: high}
+mcp_only:
+- {tool: list_contact_custom_fields, reason: 'Backed by the documented /fields REST resource, which is not modelled in this repo''s OpenAPI files.'}
+- {tool: list_opportunity_custom_fields, reason: 'Settings resource (Field Definition) documented at developer.capsulecrm.com/v2/operations/Field_Definition but absent from the captured OpenAPI.'}
+- {tool: list_project_custom_fields, reason: 'Same as above.'}
+- {tool: get_contact_custom_field, reason: 'Same as above.'}
+- {tool: get_opportunity_custom_field, reason: 'Same as above.'}
+- {tool: get_project_custom_field, reason: 'Same as above.'}
+- {tool: list_custom_fields_for_contact_data_tag, reason: 'Field-definitions-by-tag lookup; documented settings resource, not in the captured OpenAPI.'}
+- {tool: list_custom_fields_for_opportunity_data_tag, reason: 'Same as above.'}
+- {tool: list_custom_fields_for_project_data_tag, reason: 'Same as above.'}
+- {tool: list_pipelines, reason: 'Pipeline settings resource; documented, not in the captured OpenAPI.'}
+- {tool: get_pipeline, reason: 'Same as above.'}
+- {tool: list_milestones, reason: 'Milestone settings resource; documented, not in the captured OpenAPI.'}
+- {tool: list_milestones_by_pipeline, reason: 'Same as above.'}
+- {tool: get_milestone, reason: 'Same as above.'}
+- {tool: list_lost_reasons, reason: 'Lost Reason settings resource; documented, not in the captured OpenAPI.'}
+- {tool: get_lost_reason, reason: 'Same as above.'}
+- {tool: list_boards, reason: 'Board settings resource; documented, not in the captured OpenAPI.'}
+- {tool: get_board, reason: 'Same as above.'}
+- {tool: list_stages, reason: 'Stage settings resource; documented, not in the captured OpenAPI.'}
+- {tool: get_stage, reason: 'Same as above.'}
+- {tool: list_stages_by_board, reason: 'Same as above.'}
+- {tool: list_contact_tags, reason: 'Tag Definition settings resource; documented, not in the captured OpenAPI.'}
+- {tool: list_opportunity_tags, reason: 'Same as above.'}
+- {tool: list_project_tags, reason: 'Same as above.'}
+- {tool: get_contact_tag, reason: 'Same as above.'}
+- {tool: get_opportunity_tag, reason: 'Same as above.'}
+- {tool: get_project_tag, reason: 'Same as above.'}
+- {tool: list_users, reason: 'User resource; documented, not in the captured OpenAPI.'}
+- {tool: get_user, reason: 'Same as above.'}
+- {tool: get_current_user, reason: 'Documented as GET /users/current; not in the captured OpenAPI.'}
+- {tool: list_teams, reason: 'Team resource; documented, not in the captured OpenAPI.'}
+- {tool: get_team, reason: 'Same as above.'}
+- {tool: get_track, reason: 'Track resource; documented, not in the captured OpenAPI.'}
+- {tool: list_tracks_for_contact, reason: 'Same as above.'}
+- {tool: list_tracks_for_opportunity, reason: 'Same as above.'}
+- {tool: list_tracks_for_project, reason: 'Same as above.'}
+- {tool: list_activity, reason: 'Entry resource; documented, not in the captured OpenAPI.'}
+- {tool: list_entries_for_contact, reason: 'Same as above.'}
+- {tool: list_entries_for_project, reason: 'Same as above.'}
+- {tool: list_entries_for_opportunity, reason: 'Same as above.'}
+- {tool: get_entry, reason: 'Same as above.'}
+rest_only:
+- {rest: 'POST /parties', reason: 'MCP server is read-only; no write tools exist.'}
+- {rest: 'PUT /parties/{partyId}', reason: 'Read-only MCP server.'}
+- {rest: 'DELETE /parties/{partyId}', reason: 'Read-only MCP server.'}
+- {rest: 'GET /parties/deleted', reason: 'Deleted-record change feed; no tool exposes it.'}
+- {rest: 'GET /parties/{partyId}/people', reason: 'Organisation members; no tool exposes it.'}
+- {rest: 'POST /opportunities', reason: 'Read-only MCP server.'}
+- {rest: 'PUT /opportunities/{opportunityId}', reason: 'Read-only MCP server.'}
+- {rest: 'DELETE /opportunities/{opportunityId}', reason: 'Read-only MCP server.'}
+- {rest: 'GET /opportunities/deleted', reason: 'Deleted-record change feed; no tool exposes it.'}
+- {rest: 'GET /opportunities/{opportunityId}/parties', reason: 'Opportunity party links; no tool exposes it.'}
+- {rest: 'POST /opportunities/{opportunityId}/parties/{partyId}', reason: 'Read-only MCP server.'}
+- {rest: 'DELETE /opportunities/{opportunityId}/parties/{partyId}', reason: 'Read-only MCP server.'}
+- {rest: 'POST /kases', reason: 'Read-only MCP server.'}
+- {rest: 'PUT /kases/{projectId}', reason: 'Read-only MCP server.'}
+- {rest: 'DELETE /kases/{projectId}', reason: 'Read-only MCP server.'}
+- {rest: 'GET /kases/deleted', reason: 'Deleted-record change feed; no tool exposes it.'}
+- {rest: 'GET /kases/{projectId}', reason: 'No get_project tool is published, though list_projects exists.'}
+- {rest: 'POST /tasks', reason: 'Read-only MCP server.'}
+- {rest: 'PUT /tasks/{taskId}', reason: 'Read-only MCP server.'}
+- {rest: 'DELETE /tasks/{taskId}', reason: 'Read-only MCP server.'}
+- {rest: 'REST Hook subscribe/unsubscribe', reason: 'Webhook management is OAuth-app only and has no MCP tool.'}
+coverage:
+  mcp_tools: 49
+  mcp_tools_bound_to_captured_openapi: 8
+  mcp_only: 41
+  rest_operations_captured: 32
+  rest_operations_with_no_tool: 21
+  note: >-
+    41 of 49 tools are "mcp_only" only against THIS repo's captured OpenAPI -
+    every one of them is a documented Capsule v2 REST resource
+    (Field Definition, Pipeline, Milestone, Board, Stage, Tag Definition,
+    User, Team, Track, Entry) that the hand-authored spec does not model.
+    That is a gap in our contract capture, not an MCP-native capability.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

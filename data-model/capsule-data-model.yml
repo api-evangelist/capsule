@@ -1,0 +1,144 @@
+generated: '2026-09-05'
+method: derived
+source: openapi/*.yml + https://developer.capsulecrm.com/v2/models/
+description: >-
+  Entity graph for the Capsule v2 REST API, derived from the captured OpenAPI
+  paths and the provider's published model reference. Party is the hub: every
+  other core entity hangs off it.
+entities:
+- name: Party
+  api_name: party
+  path: /parties
+  description: >-
+    A contact. Polymorphic: type is "person" or "organisation". Organisations
+    contain people.
+  subtypes:
+  - person
+  - organisation
+  relationships:
+  - {kind: has_many, target: Party, via: 'GET /parties/{partyId}/people', note: 'organisation -> its people'}
+  - {kind: has_many, target: Opportunity, via: 'GET /parties/{partyId}/opportunities'}
+  - {kind: has_many, target: Project, via: 'GET /parties/{partyId}/kases'}
+  - {kind: has_many, target: Entry, via: entries for party}
+  - {kind: has_many, target: Track, via: tracks for party}
+  - {kind: has_many, target: TagDefinition, via: tags}
+  - {kind: has_many, target: FieldValue, via: fields}
+- name: Opportunity
+  api_name: opportunity
+  path: /opportunities
+  description: A sales deal, positioned on a Pipeline at a Milestone.
+  relationships:
+  - {kind: belongs_to, target: Party, via: party}
+  - {kind: belongs_to, target: Pipeline, via: pipeline}
+  - {kind: belongs_to, target: Milestone, via: milestone}
+  - {kind: belongs_to, target: LostReason, via: lostReason, note: set when closed-lost}
+  - {kind: belongs_to, target: User, via: owner}
+  - {kind: belongs_to, target: Team, via: team}
+  - {kind: has_many, target: Party, via: 'GET /opportunities/{opportunityId}/parties', note: additional linked parties}
+  - {kind: has_many, target: Task, via: tasks}
+  - {kind: has_many, target: Entry, via: entries}
+  - {kind: has_many, target: Track, via: tracks}
+- name: Project
+  api_name: kase
+  path: /kases
+  description: >-
+    A unit of client delivery. Renamed from "Case" in 2022; the API paths and
+    the JSON key are still kases/kase.
+  relationships:
+  - {kind: belongs_to, target: Party, via: party}
+  - {kind: belongs_to, target: Board, via: board}
+  - {kind: belongs_to, target: Stage, via: stage}
+  - {kind: belongs_to, target: User, via: owner}
+  - {kind: belongs_to, target: Team, via: team}
+  - {kind: has_many, target: Task, via: tasks}
+  - {kind: has_many, target: Entry, via: entries}
+  - {kind: has_many, target: Track, via: tracks}
+- name: Task
+  api_name: task
+  path: /tasks
+  description: A dated to-do, optionally attached to a Party, Opportunity or Project.
+  relationships:
+  - {kind: belongs_to, target: Party, via: party}
+  - {kind: belongs_to, target: Opportunity, via: opportunity}
+  - {kind: belongs_to, target: Project, via: kase}
+  - {kind: belongs_to, target: User, via: owner}
+  - {kind: belongs_to, target: Track, via: track}
+  - {kind: belongs_to, target: ActivityType, via: category}
+- name: Entry
+  api_name: entry
+  description: An activity record - note, email, or logged interaction.
+  relationships:
+  - {kind: belongs_to, target: Party, via: party}
+  - {kind: belongs_to, target: Opportunity, via: opportunity}
+  - {kind: belongs_to, target: Project, via: kase}
+  - {kind: belongs_to, target: User, via: creator}
+- name: Track
+  api_name: track
+  description: An instance of a repeatable task sequence, created from a TrackDefinition.
+  relationships:
+  - {kind: belongs_to, target: TrackDefinition, via: definition}
+  - {kind: belongs_to, target: Party, via: party}
+  - {kind: belongs_to, target: Opportunity, via: opportunity}
+  - {kind: belongs_to, target: Project, via: kase}
+  - {kind: has_many, target: Task, via: tasks}
+- name: Pipeline
+  description: A named sales pipeline. Multiple pipelines require Growth or above.
+  relationships:
+  - {kind: has_many, target: Milestone, via: milestones}
+  - {kind: has_many, target: Opportunity, via: opportunities}
+- name: Milestone
+  description: A stage within a sales Pipeline.
+  relationships:
+  - {kind: belongs_to, target: Pipeline, via: pipeline}
+- name: Board
+  description: A project board. Multiple boards require Growth or above.
+  relationships:
+  - {kind: has_many, target: Stage, via: stages}
+  - {kind: has_many, target: Project, via: projects}
+- name: Stage
+  description: A column within a project Board.
+  relationships:
+  - {kind: belongs_to, target: Board, via: board}
+- name: LostReason
+  description: A reason an Opportunity was closed-lost.
+- name: FieldDefinition
+  description: >-
+    A custom field definition, scoped to Party, Opportunity or Project.
+    Types include the Multi-Select List added 2025-11-17.
+  relationships:
+  - {kind: has_many, target: FieldValue, via: values}
+  - {kind: belongs_to, target: TagDefinition, via: 'data tag (fields can be scoped to a tag)'}
+- name: TagDefinition
+  description: A tag definition, scoped to Party, Opportunity or Project.
+- name: User
+  description: A Capsule user seat.
+  relationships:
+  - {kind: belongs_to, target: Team, via: teams}
+- name: Team
+  description: A group of Users.
+  relationships:
+  - {kind: has_many, target: User, via: members}
+- name: RESTHook
+  description: A webhook subscription. See asyncapi/capsule-rest-hooks-webhooks.yml.
+- name: Goal
+  description: A performance objective over Opportunities, Tasks or Activities. Starter and above.
+entity_count: 18
+id_scheme:
+  style: opaque numeric
+  prefixed: false
+  note: >-
+    Capsule ids are plain numeric identifiers with no type prefix, so an id
+    alone does not tell an agent which resource it addresses. Recorded because
+    it is a real agent-ergonomics gap, not a defect.
+naming_trap:
+  note: >-
+    Project (product name, since 2022) and kase (API path and JSON key,
+    unchanged) are the SAME entity. Anything mapping this API must not treat
+    "case" and "project" as two resources.
+change_feeds:
+- {path: /parties/deleted, purpose: ids of deleted parties for synchronisation}
+- {path: /opportunities/deleted, purpose: ids of deleted opportunities}
+- {path: /kases/deleted, purpose: ids of deleted projects}
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

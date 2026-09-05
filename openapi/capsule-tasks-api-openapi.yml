@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Capsule CRM REST Opportunities Tasks API
   description: 'Capsule CRM v2 REST API for parties (contacts and companies),
@@ -117,14 +117,14 @@ components:
                 items:
                   $ref: '#/components/schemas/Task'
   schemas:
-    Task:
-      type: object
-      additionalProperties: true
     TaskEnvelope:
       type: object
       properties:
         task:
           $ref: '#/components/schemas/Task'
+    Task:
+      type: object
+      additionalProperties: true
   parameters:
     PerPage:
       in: query

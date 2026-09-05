@@ -1,0 +1,51 @@
+generated: '2026-09-05'
+method: searched
+source: https://capsulecrm.com/security/
+description: >-
+  Capsule's public security and compliance page. There is no dedicated trust
+  portal - trust.capsulecrm.com was probed on 2026-09-05 and answers with the
+  Capsule app's "The account you were looking for doesn't exist." shell, which
+  is a false 200, not a trust center.
+url: https://capsulecrm.com/security/
+status: 200
+dedicated_trust_portal: false
+probed:
+- {url: 'https://trust.capsulecrm.com/', status: 200, verdict: 'soft-404 / application shell, not a trust center'}
+- {url: 'https://capsulecrm.com/security/', status: 200, verdict: live security + compliance page}
+- {url: 'https://capsulecrm.com/gdpr/', status: 200, verdict: live GDPR page}
+certifications:
+- name: ISO 27001
+  scope: infrastructure
+  holder: Amazon Web Services
+  self_certified: false
+  note: >-
+    Capsule cites ISO 27001 as a property of the AWS data centres it runs on,
+    NOT as a certification held by Capsule/Zestia. Recorded with that
+    distinction because the two are routinely conflated.
+- name: PCI-DSS
+  scope: payment collection
+  holder: Capsule
+  note: Cited for the handling of subscription payment collection.
+- name: SOC (report)
+  scope: infrastructure
+  holder: Amazon Web Services
+  note: >-
+    The page refers to SOC reports being available; it does not state that
+    Capsule itself holds a SOC 2 Type II attestation. No report or audit
+    period is published.
+compliance_programs:
+- {name: GDPR, url: 'https://capsulecrm.com/gdpr/', status: 200}
+security_practices:
+- Encryption in transit with current recommended cipher suites and protocols
+- Customer data encrypted at rest
+- Hosted on AWS with real-time replication across multiple locations
+- Continuous backups for disaster recovery
+- Regular third-party penetration testing
+uptime_claim: '99.99%'
+gaps:
+- No downloadable audit report, certificate or attestation letter.
+- No security questionnaire package or NDA-gated document room.
+- No sub-processor list linked from the security page.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

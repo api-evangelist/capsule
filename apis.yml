@@ -63,43 +63,50 @@ tags_raw:
   - Tasks
   - Webhooks
 created: '2025-01-01'
-modified: '2026-04-23'
+modified: '2026-09-05'
 specificationVersion: '0.23'
 apis:
 - aid: capsule:capsule-opportunities-api
   name: Capsule Opportunities API
   description: The Opportunities API from Capsule — 7 operation(s) for opportunities.
   humanURL: https://developer.capsulecrm.com/
+  baseURL: https://api.capsulecrm.com/api/v2
   tags:
   - Opportunities
   properties:
   - type: OpenAPI
     url: openapi/capsule-opportunities-api-openapi.yml
+  - type: Overlay
+    url: overlays/capsule-opportunities-api-overlay.yaml
   - type: Documentation
     url: https://developer.capsulecrm.com/
   - type: Authentication
     url: https://developer.capsulecrm.com/v2/overview/authentication
   - type: Webhooks
-    url: https://developer.capsulecrm.com/v2/resources/rest-hooks
+    url: https://developer.capsulecrm.com/v2/overview/avoid-polling-with-rest-hooks
 - aid: capsule:capsule-parties-api
   name: Capsule Parties API
   description: The Parties API from Capsule — 5 operation(s) for parties.
   humanURL: https://developer.capsulecrm.com/
+  baseURL: https://api.capsulecrm.com/api/v2
   tags:
   - Parties
   properties:
   - type: OpenAPI
     url: openapi/capsule-parties-api-openapi.yml
+  - type: Overlay
+    url: overlays/capsule-parties-api-overlay.yaml
   - type: Documentation
     url: https://developer.capsulecrm.com/
   - type: Authentication
     url: https://developer.capsulecrm.com/v2/overview/authentication
   - type: Webhooks
-    url: https://developer.capsulecrm.com/v2/resources/rest-hooks
+    url: https://developer.capsulecrm.com/v2/overview/avoid-polling-with-rest-hooks
 - aid: capsule:capsule-projects-api
   name: Capsule Projects API
   description: The Projects API from Capsule — 5 operation(s) for projects.
   humanURL: https://developer.capsulecrm.com/
+  baseURL: https://api.capsulecrm.com/api/v2
   tags:
   - Project
   tags_raw:
@@ -107,16 +114,19 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/capsule-projects-api-openapi.yml
+  - type: Overlay
+    url: overlays/capsule-projects-api-overlay.yaml
   - type: Documentation
     url: https://developer.capsulecrm.com/
   - type: Authentication
     url: https://developer.capsulecrm.com/v2/overview/authentication
   - type: Webhooks
-    url: https://developer.capsulecrm.com/v2/resources/rest-hooks
+    url: https://developer.capsulecrm.com/v2/overview/avoid-polling-with-rest-hooks
 - aid: capsule:capsule-tasks-api
   name: Capsule Tasks API
   description: The Tasks API from Capsule — 2 operation(s) for tasks.
   humanURL: https://developer.capsulecrm.com/
+  baseURL: https://api.capsulecrm.com/api/v2
   tags:
   - Task
   tags_raw:
@@ -124,12 +134,14 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/capsule-tasks-api-openapi.yml
+  - type: Overlay
+    url: overlays/capsule-tasks-api-overlay.yaml
   - type: Documentation
     url: https://developer.capsulecrm.com/
   - type: Authentication
     url: https://developer.capsulecrm.com/v2/overview/authentication
   - type: Webhooks
-    url: https://developer.capsulecrm.com/v2/resources/rest-hooks
+    url: https://developer.capsulecrm.com/v2/overview/avoid-polling-with-rest-hooks
 common:
   - type: AgenticAccess
     url: agentic-access/capsule-agentic-access.yml
@@ -150,11 +162,67 @@ common:
   - type: Blog
     url: https://capsulecrm.com/blog
   - type: PrivacyPolicy
-    url: https://capsulecrm.com/privacy-policy
+    url: https://capsulecrm.com/privacy/
   - type: TermsOfService
-    url: https://capsulecrm.com/terms-of-service
+    url: https://capsulecrm.com/terms/
   - type: Integrations
     url: https://capsulecrm.com/integrations/
+  - type: WellKnown
+    url: well-known/capsule-well-known.yml
+  - type: OpenIDConnect
+    url: https://api.capsulecrm.com/.well-known/openid-configuration
+  - type: OAuthScopes
+    url: scopes/capsule-scopes.yml
+  - type: MCPServer
+    url: mcp/capsule-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/capsule-tool-crosswalk.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: LLMsTxt
+    url: llms/capsule-llms.txt
+  - type: Conventions
+    url: conventions/capsule-conventions.yml
+  - type: Conformance
+    url: conformance/capsule-conformance.yml
+  - type: Compliance
+    url: https://capsulecrm.com/security/
+  - type: TrustCenter
+    url: security/capsule-trust-center.yml
+  - type: Security
+    url: security/capsule-vulnerability-disclosure.yml
+  - type: VulnerabilityDisclosure
+    url: security/capsule-vulnerability-disclosure.yml
+  - type: ErrorCatalog
+    url: errors/capsule-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/capsule-lifecycle.yml
+  - type: StatusPage
+    url: https://status.capsulecrm.com/
+  - type: ChangeLog
+    url: changelog/capsule-changelog.yml
+  - type: DataModel
+    url: data-model/capsule-data-model.yml
+  - type: Packages
+    url: packages/capsule-packages.yml
+  - type: RateLimits
+    url: rate-limits/capsule-rate-limits.yml
+  - type: Plans
+    url: plans/capsule-plans-pricing.yml
+  - type: Webhooks
+    url: asyncapi/capsule-rest-hooks-webhooks.yml
+  - type: DeveloperPortal
+    url: https://developer.capsulecrm.com/
+  - type: APIReference
+    url: https://developer.capsulecrm.com/v2/operations/Party
+  - type: GettingStarted
+    url: https://developer.capsulecrm.com/v2/overview/authentication
+  - type: SignUp
+    url: https://capsulecrm.com/signup/
+  - type: GitHubOrganization
+    url: https://github.com/zestia
+  - type: HelpCenter
+    url: https://capsulecrm.com/help/
 integrations:
   - name: QuickBooks
   - name: Xero
@@ -166,3 +234,8 @@ integrations:
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-09-05'
+  status: enriched
+  artifacts_added: 26
+  pass: local-v3

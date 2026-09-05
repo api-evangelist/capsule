@@ -1,0 +1,41 @@
+generated: '2026-09-05'
+method: probed
+source: https://api.capsulecrm.com/.well-known/oauth-authorization-server
+docs: https://developer.capsulecrm.com/v2/overview/authentication
+description: >-
+  OAuth 2.0 scopes Capsule advertises. The authoritative list is
+  scopes_supported in the served OAuth Authorization Server Metadata document
+  (RFC 8414) on the API host; the authentication docs page documents only the
+  three combinations an application is expected to request. Both are recorded,
+  and where they disagree the discovery document wins.
+authorization_server: https://api.capsulecrm.com
+authorization_endpoint: https://api.capsulecrm.com/oauth/authorise
+token_endpoint: https://api.capsulecrm.com/oauth/token
+flows:
+- authorization_code
+scope_delimiter: space
+scopes:
+- {name: read, description: 'Read-only access to Capsule data.', source: discovery+docs}
+- {name: write, description: 'Create, update and delete Capsule data. Requested alongside read.', source: discovery+docs}
+- {name: user_preference, description: 'Access to the authenticated user''s preferences.', source: discovery+docs}
+- {name: openid, description: 'OpenID Connect - request an ID token.', source: discovery}
+- {name: profile, description: 'OIDC profile claims (name, given_name, family_name, locale, updated_at).', source: discovery}
+- {name: email, description: 'OIDC email claim.', source: discovery}
+- {name: tenant, description: 'Capsule tenant/subdomain claim identifying which Capsule account the token belongs to.', source: discovery}
+scope_count: 7
+documented_combinations:
+- {value: 'read', meaning: Read-only access}
+- {value: 'read write', meaning: Full read and write. The default an application receives.}
+- {value: 'read write user_preference', meaning: Read, write and user preferences.}
+notes:
+- >-
+  The docs page presents scopes as three fixed combinations rather than a
+  composable set; the discovery document exposes seven individual values,
+  including the four OIDC ones the docs never mention.
+- >-
+  Capsule publishes no per-operation scope mapping. Which endpoints require
+  write versus user_preference is not documented, so an agent cannot compute
+  least-privilege from the contract.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

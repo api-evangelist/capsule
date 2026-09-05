@@ -1,0 +1,23 @@
+generated: '2026-09-05'
+method: generated
+source: openapi/*.yml + https://developer.capsulecrm.com/v2/overview/ + repo artifacts
+description: >-
+  Packaged Agent Skills for the Capsule v2 REST API. Capsule publishes no
+  skills or AGENTS.md of its own - these are API Evangelist generations
+  grounded in real Capsule paths, the published rate limit, the documented
+  webhook catalogue, and the two agent-relevant absences (no idempotency, no
+  undo).
+provider_published_skills: false
+skills:
+- {name: capsule-sync-contacts, file: capsule-sync-contacts.md, api: Capsule Parties API, summary: 'Incremental contact synchronisation including deletions, within the 4,000/hour budget.'}
+- {name: capsule-manage-opportunity, file: capsule-manage-opportunity.md, api: Capsule Opportunities API, summary: 'Create and advance a sales opportunity with no idempotency keys and no undo.'}
+- {name: capsule-subscribe-webhooks, file: capsule-subscribe-webhooks.md, api: Capsule REST Hooks, summary: 'Event-driven integration via REST Hooks, with the 20-hook ceiling and unsigned-payload caveat.'}
+skill_count: 3
+grounding_note: >-
+  Every path named in these skills appears either in this repo's captured
+  OpenAPI or in Capsule's published operation reference. The contracts declare
+  no operationIds, so the skills reference METHOD + PATH; overlays/ proposes
+  operationIds separately without mutating the base documents.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

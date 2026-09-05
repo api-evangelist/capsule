@@ -1,0 +1,55 @@
+generated: '2026-09-05'
+method: searched
+source: https://developer.capsulecrm.com/v2/overview/announcements-and-changes
+description: >-
+  Versioning, change-notice, status and support posture for the Capsule v2
+  REST API.
+versioning:
+  scheme: path
+  current: v2
+  path_prefix: /api/v2
+  since: v2 has been the documented API across the whole published changelog
+  sunset_headers: false
+  sunset_header_note: >-
+    Capsule returns no Deprecation or Sunset headers (RFC 8594) and documents
+    none.
+deprecation:
+  formal_policy: false
+  policy_url: null
+  statement: >-
+    "We'll always try to avoid breaking changes to existing resources on the
+    API without notice." That is a best-efforts intention, not a deprecation
+    policy: no notice period, no sunset window, no support horizon for a
+    retired version is published anywhere on developer.capsulecrm.com.
+  practice: >-
+    Retirements ARE announced on the dated changelog with an effective date -
+    the 19 August 2026 facehub retirement is the worked example - but the
+    notice is prose on a shared page with no feed and no per-entry anchor.
+  deprecated_operations: []
+  deprecated_operations_note: >-
+    No operation in the captured OpenAPI carries deprecated: true, and the
+    docs mark none.
+change_notice:
+  channel: https://developer.capsulecrm.com/v2/overview/announcements-and-changes
+  feed: null
+  see: changelog/capsule-changelog.yml
+status_page:
+  url: https://status.capsulecrm.com/
+  status: 200
+  feed: https://status.capsulecrm.com/history.rss
+  feed_status: 200
+  method: probed
+  probed: '2026-09-05'
+sla:
+  published_sla: false
+  uptime_claim: '99.99% (stated on https://capsulecrm.com/security/)'
+  uptime_claim_note: >-
+    A marketing uptime figure on the security page, not a contractual SLA.
+    No SLA document, credit schedule or availability commitment is published
+    for any plan, including Ultimate.
+support:
+  docs: https://developer.capsulecrm.com/v2/overview/support-and-discussion
+  help_center: https://capsulecrm.com/support
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
