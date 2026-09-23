@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Capsule CRM REST Opportunities Parties API
+  title: Capsule CRM REST Parties API
   description: 'Capsule CRM v2 REST API for parties (contacts and companies),
 
     opportunities, projects (kases), and tasks. Authentication uses
@@ -16,9 +16,7 @@ info:
 
     Request bodies and response schemas are modeled generically; refer to
 
-    the developer docs for the full property set per resource.
-
-    '
+    the developer docs for the full property set per resource.'
   version: 2.0.0
   contact:
     name: Capsule CRM
@@ -43,6 +41,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/PartyList'
+      operationId: getParties
+      x-operation-id-source: derived
     post:
       tags:
       - Parties
@@ -56,6 +56,8 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/PartyObject'
+      operationId: postParties
+      x-operation-id-source: derived
   /parties/{partyId}:
     parameters:
     - $ref: '#/components/parameters/PartyId'
@@ -68,6 +70,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/PartyObject'
+      operationId: getPartiesByPartyId
+      x-operation-id-source: derived
     put:
       tags:
       - Parties
@@ -81,6 +85,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/PartyObject'
+      operationId: putPartiesByPartyId
+      x-operation-id-source: derived
     delete:
       tags:
       - Parties
@@ -88,6 +94,8 @@ paths:
       responses:
         '204':
           description: Deleted
+      operationId: deletePartiesByPartyId
+      x-operation-id-source: derived
   /parties/{partyId}/people:
     parameters:
     - $ref: '#/components/parameters/PartyId'
@@ -98,6 +106,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/PartyList'
+      operationId: getPartiesByPartyIdPeople
+      x-operation-id-source: derived
   /parties/deleted:
     get:
       tags:
@@ -112,6 +122,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/PartyList'
+      operationId: getPartiesDeleted
+      x-operation-id-source: derived
   /parties/search:
     get:
       tags:
@@ -125,17 +137,38 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/PartyList'
+      operationId: getPartiesSearch
+      x-operation-id-source: derived
 components:
-  schemas:
-    PartyEnvelope:
-      type: object
-      properties:
-        party:
-          $ref: '#/components/schemas/Party'
-    Party:
-      type: object
-      additionalProperties: true
+  responses:
+    PartyList:
+      description: List of parties.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              parties:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Party'
+    PartyObject:
+      description: Party envelope.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PartyEnvelope'
   parameters:
+    PerPage:
+      in: query
+      name: perPage
+      schema:
+        type: integer
+    Page:
+      in: query
+      name: page
+      schema:
+        type: integer
     PartyId:
       in: path
       name: partyId
@@ -148,34 +181,15 @@ components:
       description: Comma-separated list of related resources to embed.
       schema:
         type: string
-    PerPage:
-      in: query
-      name: perPage
-      schema:
-        type: integer
-    Page:
-      in: query
-      name: page
-      schema:
-        type: integer
-  responses:
-    PartyObject:
-      description: Party envelope.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PartyEnvelope'
-    PartyList:
-      description: List of parties.
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              parties:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Party'
+  schemas:
+    Party:
+      type: object
+      additionalProperties: true
+    PartyEnvelope:
+      type: object
+      properties:
+        party:
+          $ref: '#/components/schemas/Party'
   securitySchemes:
     bearerAuth:
       type: http

@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Capsule CRM REST Opportunities Tasks API
+  title: Capsule CRM REST Tasks API
   description: 'Capsule CRM v2 REST API for parties (contacts and companies),
 
     opportunities, projects (kases), and tasks. Authentication uses
@@ -16,9 +16,7 @@ info:
 
     Request bodies and response schemas are modeled generically; refer to
 
-    the developer docs for the full property set per resource.
-
-    '
+    the developer docs for the full property set per resource.'
   version: 2.0.0
   contact:
     name: Capsule CRM
@@ -50,6 +48,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/TaskList'
+      operationId: getTasks
+      x-operation-id-source: derived
     post:
       tags:
       - Tasks
@@ -63,6 +63,8 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/TaskObject'
+      operationId: postTasks
+      x-operation-id-source: derived
   /tasks/{taskId}:
     parameters:
     - in: path
@@ -77,6 +79,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/TaskObject'
+      operationId: getTasksByTaskId
+      x-operation-id-source: derived
     put:
       tags:
       - Tasks
@@ -90,6 +94,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/TaskObject'
+      operationId: putTasksByTaskId
+      x-operation-id-source: derived
     delete:
       tags:
       - Tasks
@@ -97,7 +103,29 @@ paths:
       responses:
         '204':
           description: Deleted
+      operationId: deleteTasksByTaskId
+      x-operation-id-source: derived
 components:
+  parameters:
+    PerPage:
+      in: query
+      name: perPage
+      schema:
+        type: integer
+    Page:
+      in: query
+      name: page
+      schema:
+        type: integer
+  schemas:
+    TaskEnvelope:
+      type: object
+      properties:
+        task:
+          $ref: '#/components/schemas/Task'
+    Task:
+      type: object
+      additionalProperties: true
   responses:
     TaskObject:
       description: Task envelope.
@@ -116,26 +144,6 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/Task'
-  schemas:
-    TaskEnvelope:
-      type: object
-      properties:
-        task:
-          $ref: '#/components/schemas/Task'
-    Task:
-      type: object
-      additionalProperties: true
-  parameters:
-    PerPage:
-      in: query
-      name: perPage
-      schema:
-        type: integer
-    Page:
-      in: query
-      name: page
-      schema:
-        type: integer
   securitySchemes:
     bearerAuth:
       type: http

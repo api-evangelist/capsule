@@ -1,10 +1,7 @@
 {
   "provider": "capsule",
   "sources": [
-    "capsule-opportunities-api-openapi.yml",
-    "capsule-parties-api-openapi.yml",
-    "capsule-projects-api-openapi.yml",
-    "capsule-tasks-api-openapi.yml"
+    "_original/capsule-openapi.yml"
   ],
   "outputs": [
     "capsule-opportunities-api-openapi.yml",
@@ -16,11 +13,14 @@
   "errors": [],
   "warnings": [],
   "notes": [
-    "capsule-opportunities-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "capsule-parties-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "capsule-projects-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "capsule-tasks-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "capsule-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "capsule-opportunities-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "capsule-parties-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "capsule-projects-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "capsule-tasks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

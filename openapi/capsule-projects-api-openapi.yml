@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Capsule CRM REST Opportunities Projects API
+  title: Capsule CRM REST Projects API
   description: 'Capsule CRM v2 REST API for parties (contacts and companies),
 
     opportunities, projects (kases), and tasks. Authentication uses
@@ -16,9 +16,7 @@ info:
 
     Request bodies and response schemas are modeled generically; refer to
 
-    the developer docs for the full property set per resource.
-
-    '
+    the developer docs for the full property set per resource.'
   version: 2.0.0
   contact:
     name: Capsule CRM
@@ -42,6 +40,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ProjectList'
+      operationId: getKases
+      x-operation-id-source: derived
     post:
       tags:
       - Projects
@@ -55,6 +55,8 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/ProjectObject'
+      operationId: postKases
+      x-operation-id-source: derived
   /kases/{projectId}:
     parameters:
     - $ref: '#/components/parameters/ProjectId'
@@ -65,6 +67,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ProjectObject'
+      operationId: getKasesByProjectId
+      x-operation-id-source: derived
     put:
       tags:
       - Projects
@@ -78,6 +82,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ProjectObject'
+      operationId: putKasesByProjectId
+      x-operation-id-source: derived
     delete:
       tags:
       - Projects
@@ -85,6 +91,8 @@ paths:
       responses:
         '204':
           description: Deleted
+      operationId: deleteKasesByProjectId
+      x-operation-id-source: derived
   /kases/deleted:
     get:
       tags:
@@ -99,6 +107,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ProjectList'
+      operationId: getKasesDeleted
+      x-operation-id-source: derived
   /kases/search:
     get:
       tags:
@@ -112,6 +122,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ProjectList'
+      operationId: getKasesSearch
+      x-operation-id-source: derived
   /parties/{partyId}/kases:
     parameters:
     - $ref: '#/components/parameters/PartyId'
@@ -122,46 +134,42 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ProjectList'
+      operationId: getPartiesByPartyIdKases
+      x-operation-id-source: derived
 components:
+  schemas:
+    Project:
+      type: object
+      additionalProperties: true
+    ProjectEnvelope:
+      type: object
+      properties:
+        kase:
+          $ref: '#/components/schemas/Project'
   parameters:
-    PartyId:
-      in: path
-      name: partyId
-      required: true
+    PerPage:
+      in: query
+      name: perPage
       schema:
-        type: string
+        type: integer
     ProjectId:
       in: path
       name: projectId
       required: true
       schema:
         type: string
-    PerPage:
-      in: query
-      name: perPage
-      schema:
-        type: integer
     Page:
       in: query
       name: page
       schema:
         type: integer
-  schemas:
-    ProjectEnvelope:
-      type: object
-      properties:
-        kase:
-          $ref: '#/components/schemas/Project'
-    Project:
-      type: object
-      additionalProperties: true
+    PartyId:
+      in: path
+      name: partyId
+      required: true
+      schema:
+        type: string
   responses:
-    ProjectObject:
-      description: Project envelope.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ProjectEnvelope'
     ProjectList:
       description: List of projects.
       content:
@@ -173,6 +181,12 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/Project'
+    ProjectObject:
+      description: Project envelope.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ProjectEnvelope'
   securitySchemes:
     bearerAuth:
       type: http

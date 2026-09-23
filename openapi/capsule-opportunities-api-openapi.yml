@@ -16,9 +16,7 @@ info:
 
     Request bodies and response schemas are modeled generically; refer to
 
-    the developer docs for the full property set per resource.
-
-    '
+    the developer docs for the full property set per resource.'
   version: 2.0.0
   contact:
     name: Capsule CRM
@@ -42,6 +40,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/OpportunityList'
+      operationId: getOpportunities
+      x-operation-id-source: derived
     post:
       tags:
       - Opportunities
@@ -55,6 +55,8 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/OpportunityObject'
+      operationId: postOpportunities
+      x-operation-id-source: derived
   /opportunities/{opportunityId}:
     parameters:
     - $ref: '#/components/parameters/OpportunityId'
@@ -65,6 +67,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/OpportunityObject'
+      operationId: getOpportunitiesByOpportunityId
+      x-operation-id-source: derived
     put:
       tags:
       - Opportunities
@@ -78,6 +82,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/OpportunityObject'
+      operationId: putOpportunitiesByOpportunityId
+      x-operation-id-source: derived
     delete:
       tags:
       - Opportunities
@@ -85,6 +91,8 @@ paths:
       responses:
         '204':
           description: Deleted
+      operationId: deleteOpportunitiesByOpportunityId
+      x-operation-id-source: derived
   /opportunities/deleted:
     get:
       tags:
@@ -99,6 +107,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/OpportunityList'
+      operationId: getOpportunitiesDeleted
+      x-operation-id-source: derived
   /opportunities/search:
     get:
       tags:
@@ -112,6 +122,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/OpportunityList'
+      operationId: getOpportunitiesSearch
+      x-operation-id-source: derived
   /opportunities/{opportunityId}/parties:
     parameters:
     - $ref: '#/components/parameters/OpportunityId'
@@ -122,6 +134,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/PartyList'
+      operationId: getOpportunitiesByOpportunityIdParties
+      x-operation-id-source: derived
   /opportunities/{opportunityId}/parties/{partyId}:
     parameters:
     - $ref: '#/components/parameters/OpportunityId'
@@ -133,6 +147,8 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/Generic'
+      operationId: postOpportunitiesByOpportunityIdPartiesByPartyId
+      x-operation-id-source: derived
     delete:
       tags:
       - Opportunities
@@ -140,6 +156,8 @@ paths:
       responses:
         '204':
           description: Removed
+      operationId: deleteOpportunitiesByOpportunityIdPartiesByPartyId
+      x-operation-id-source: derived
   /parties/{partyId}/opportunities:
     parameters:
     - $ref: '#/components/parameters/PartyId'
@@ -150,21 +168,10 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/OpportunityList'
+      operationId: getPartiesByPartyIdOpportunities
+      x-operation-id-source: derived
 components:
   responses:
-    Generic:
-      description: Operation accepted.
-      content:
-        application/json:
-          schema:
-            type: object
-            additionalProperties: true
-    OpportunityObject:
-      description: Opportunity envelope.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OpportunityEnvelope'
     OpportunityList:
       description: List of opportunities.
       content:
@@ -176,6 +183,13 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/Opportunity'
+    Generic:
+      description: Operation accepted.
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: true
     PartyList:
       description: List of parties.
       content:
@@ -187,33 +201,16 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/Party'
-  schemas:
-    Opportunity:
-      type: object
-      additionalProperties: true
-    OpportunityEnvelope:
-      type: object
-      properties:
-        opportunity:
-          $ref: '#/components/schemas/Opportunity'
-    Party:
-      type: object
-      additionalProperties: true
+    OpportunityObject:
+      description: Opportunity envelope.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OpportunityEnvelope'
   parameters:
-    PartyId:
-      in: path
-      name: partyId
-      required: true
-      schema:
-        type: string
     PerPage:
       in: query
       name: perPage
-      schema:
-        type: integer
-    Page:
-      in: query
-      name: page
       schema:
         type: integer
     OpportunityId:
@@ -222,6 +219,29 @@ components:
       required: true
       schema:
         type: string
+    Page:
+      in: query
+      name: page
+      schema:
+        type: integer
+    PartyId:
+      in: path
+      name: partyId
+      required: true
+      schema:
+        type: string
+  schemas:
+    OpportunityEnvelope:
+      type: object
+      properties:
+        opportunity:
+          $ref: '#/components/schemas/Opportunity'
+    Opportunity:
+      type: object
+      additionalProperties: true
+    Party:
+      type: object
+      additionalProperties: true
   securitySchemes:
     bearerAuth:
       type: http
